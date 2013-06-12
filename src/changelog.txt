@@ -1,0 +1,19 @@
+Version 1.1.0
+
+- Hash-based saving
+	This feature ensures that you have the exact same file 
+	when you load corruption settings from others. 
+	If you do not have the exact same file, a file of the
+	same name will be selected if it exists. In this 
+	case, you will be warned that it may not be the 
+	intended corruption target.
+
+- File and directory selection dialogs now start in their
+  current or previous directory
+
+- Paths now handle spaces properly
+	
+
+Version 1.0.0
+
+- Initial release on Github
