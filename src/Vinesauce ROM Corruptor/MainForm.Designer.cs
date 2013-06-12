@@ -1,4 +1,24 @@
-﻿namespace Vinesauce_ROM_Corruptor
+﻿/* 
+ * Copyright (C) 2013 Ryan Sammon.
+ * 
+ * This file is part of the Vinesauce ROM Corruptor.
+ * 
+ * The Vinesauce ROM Corruptor is free software: you can redistribute
+ * it and/or modify it under the terms of the GNU General Public 
+ * License as published by the Free Software Foundation, either 
+ * version 3 of the License, or (at your option) any later version.
+ * 
+ * The Vinesauce ROM Corruptor is distributed in the hope that it
+ * will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+ * See the GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with the Vinesauce ROM Corruptor.  If not, see 
+ * <http://www.gnu.org/licenses/>.
+ */
+
+namespace Vinesauce_ROM_Corruptor
 {
     partial class MainForm
     {
@@ -29,14 +49,16 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            this.button_RomToCorruptBrowse = new System.Windows.Forms.Button();
-            this.textBox_RomToCorrupt = new System.Windows.Forms.TextBox();
+            this.button_RomDirectoryBrowse = new System.Windows.Forms.Button();
+            this.textBox_RomDirectory = new System.Windows.Forms.TextBox();
             this.labelRomToCorrupt = new System.Windows.Forms.Label();
             this.labelSaveLocation = new System.Windows.Forms.Label();
             this.textBox_SaveLocation = new System.Windows.Forms.TextBox();
             this.button_SaveLocationBrowse = new System.Windows.Forms.Button();
             this.checkBox_Overwrite = new System.Windows.Forms.CheckBox();
             this.groupBox_FileSelection = new System.Windows.Forms.GroupBox();
+            this.listView_Files = new System.Windows.Forms.ListView();
+            this.listViewC_fileName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.groupBox_EmulatorSelection = new System.Windows.Forms.GroupBox();
             this.button_EmulatorToRunBrowse = new System.Windows.Forms.Button();
             this.textBox_EmulatorToRun = new System.Windows.Forms.TextBox();
@@ -124,40 +146,40 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
-            // button_RomToCorruptBrowse
+            // button_RomDirectoryBrowse
             // 
-            this.button_RomToCorruptBrowse.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_RomToCorruptBrowse.Location = new System.Drawing.Point(327, 30);
-            this.button_RomToCorruptBrowse.Name = "button_RomToCorruptBrowse";
-            this.button_RomToCorruptBrowse.Size = new System.Drawing.Size(26, 23);
-            this.button_RomToCorruptBrowse.TabIndex = 0;
-            this.button_RomToCorruptBrowse.Text = "...";
-            this.button_RomToCorruptBrowse.UseVisualStyleBackColor = true;
-            this.button_RomToCorruptBrowse.Click += new System.EventHandler(this.button_RomToCorruptBrowse_Click);
+            this.button_RomDirectoryBrowse.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button_RomDirectoryBrowse.Location = new System.Drawing.Point(327, 30);
+            this.button_RomDirectoryBrowse.Name = "button_RomDirectoryBrowse";
+            this.button_RomDirectoryBrowse.Size = new System.Drawing.Size(26, 23);
+            this.button_RomDirectoryBrowse.TabIndex = 0;
+            this.button_RomDirectoryBrowse.Text = "...";
+            this.button_RomDirectoryBrowse.UseVisualStyleBackColor = true;
+            this.button_RomDirectoryBrowse.Click += new System.EventHandler(this.button_RomToCorruptBrowse_Click);
             // 
-            // textBox_RomToCorrupt
+            // textBox_RomDirectory
             // 
-            this.textBox_RomToCorrupt.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox_RomToCorrupt.Location = new System.Drawing.Point(9, 32);
-            this.textBox_RomToCorrupt.Name = "textBox_RomToCorrupt";
-            this.textBox_RomToCorrupt.Size = new System.Drawing.Size(312, 20);
-            this.textBox_RomToCorrupt.TabIndex = 1;
+            this.textBox_RomDirectory.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox_RomDirectory.Location = new System.Drawing.Point(10, 32);
+            this.textBox_RomDirectory.Name = "textBox_RomDirectory";
+            this.textBox_RomDirectory.Size = new System.Drawing.Size(312, 20);
+            this.textBox_RomDirectory.TabIndex = 1;
             // 
             // labelRomToCorrupt
             // 
             this.labelRomToCorrupt.AutoSize = true;
             this.labelRomToCorrupt.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelRomToCorrupt.Location = new System.Drawing.Point(6, 16);
+            this.labelRomToCorrupt.Location = new System.Drawing.Point(7, 16);
             this.labelRomToCorrupt.Name = "labelRomToCorrupt";
-            this.labelRomToCorrupt.Size = new System.Drawing.Size(95, 13);
+            this.labelRomToCorrupt.Size = new System.Drawing.Size(90, 13);
             this.labelRomToCorrupt.TabIndex = 2;
-            this.labelRomToCorrupt.Text = "ROM to Corrupt";
+            this.labelRomToCorrupt.Text = "ROM Directory";
             // 
             // labelSaveLocation
             // 
             this.labelSaveLocation.AutoSize = true;
             this.labelSaveLocation.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelSaveLocation.Location = new System.Drawing.Point(6, 55);
+            this.labelSaveLocation.Location = new System.Drawing.Point(6, 245);
             this.labelSaveLocation.Name = "labelSaveLocation";
             this.labelSaveLocation.Size = new System.Drawing.Size(146, 13);
             this.labelSaveLocation.TabIndex = 3;
@@ -166,7 +188,7 @@
             // textBox_SaveLocation
             // 
             this.textBox_SaveLocation.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox_SaveLocation.Location = new System.Drawing.Point(9, 71);
+            this.textBox_SaveLocation.Location = new System.Drawing.Point(9, 261);
             this.textBox_SaveLocation.Name = "textBox_SaveLocation";
             this.textBox_SaveLocation.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.textBox_SaveLocation.Size = new System.Drawing.Size(312, 20);
@@ -176,7 +198,7 @@
             // button_SaveLocationBrowse
             // 
             this.button_SaveLocationBrowse.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_SaveLocationBrowse.Location = new System.Drawing.Point(327, 69);
+            this.button_SaveLocationBrowse.Location = new System.Drawing.Point(326, 261);
             this.button_SaveLocationBrowse.Name = "button_SaveLocationBrowse";
             this.button_SaveLocationBrowse.Size = new System.Drawing.Size(26, 23);
             this.button_SaveLocationBrowse.TabIndex = 5;
@@ -189,7 +211,7 @@
             this.checkBox_Overwrite.AutoSize = true;
             this.checkBox_Overwrite.Checked = true;
             this.checkBox_Overwrite.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox_Overwrite.Location = new System.Drawing.Point(9, 97);
+            this.checkBox_Overwrite.Location = new System.Drawing.Point(9, 287);
             this.checkBox_Overwrite.Name = "checkBox_Overwrite";
             this.checkBox_Overwrite.Size = new System.Drawing.Size(104, 17);
             this.checkBox_Overwrite.TabIndex = 6;
@@ -198,20 +220,43 @@
             // 
             // groupBox_FileSelection
             // 
+            this.groupBox_FileSelection.Controls.Add(this.listView_Files);
             this.groupBox_FileSelection.Controls.Add(this.checkBox_Overwrite);
             this.groupBox_FileSelection.Controls.Add(this.labelRomToCorrupt);
             this.groupBox_FileSelection.Controls.Add(this.button_SaveLocationBrowse);
-            this.groupBox_FileSelection.Controls.Add(this.button_RomToCorruptBrowse);
+            this.groupBox_FileSelection.Controls.Add(this.button_RomDirectoryBrowse);
             this.groupBox_FileSelection.Controls.Add(this.textBox_SaveLocation);
-            this.groupBox_FileSelection.Controls.Add(this.textBox_RomToCorrupt);
+            this.groupBox_FileSelection.Controls.Add(this.textBox_RomDirectory);
             this.groupBox_FileSelection.Controls.Add(this.labelSaveLocation);
             this.groupBox_FileSelection.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox_FileSelection.Location = new System.Drawing.Point(12, 12);
+            this.groupBox_FileSelection.Location = new System.Drawing.Point(10, 5);
             this.groupBox_FileSelection.Name = "groupBox_FileSelection";
-            this.groupBox_FileSelection.Size = new System.Drawing.Size(359, 117);
+            this.groupBox_FileSelection.Size = new System.Drawing.Size(359, 313);
             this.groupBox_FileSelection.TabIndex = 7;
             this.groupBox_FileSelection.TabStop = false;
             this.groupBox_FileSelection.Text = "File Selection";
+            // 
+            // listView_Files
+            // 
+            this.listView_Files.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.listViewC_fileName});
+            this.listView_Files.FullRowSelect = true;
+            this.listView_Files.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+            this.listView_Files.HideSelection = false;
+            this.listView_Files.Location = new System.Drawing.Point(10, 56);
+            this.listView_Files.Margin = new System.Windows.Forms.Padding(2);
+            this.listView_Files.MultiSelect = false;
+            this.listView_Files.Name = "listView_Files";
+            this.listView_Files.Size = new System.Drawing.Size(344, 188);
+            this.listView_Files.TabIndex = 47;
+            this.listView_Files.UseCompatibleStateImageBehavior = false;
+            this.listView_Files.View = System.Windows.Forms.View.Details;
+            this.listView_Files.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.listView_Files_ItemSelectionChanged);
+            // 
+            // listViewC_fileName
+            // 
+            this.listViewC_fileName.Text = "File Name";
+            this.listViewC_fileName.Width = 344;
             // 
             // groupBox_EmulatorSelection
             // 
@@ -220,7 +265,7 @@
             this.groupBox_EmulatorSelection.Controls.Add(this.label_EmulatorToRun);
             this.groupBox_EmulatorSelection.Controls.Add(this.checkBox_RunEmulator);
             this.groupBox_EmulatorSelection.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox_EmulatorSelection.Location = new System.Drawing.Point(13, 135);
+            this.groupBox_EmulatorSelection.Location = new System.Drawing.Point(10, 323);
             this.groupBox_EmulatorSelection.Name = "groupBox_EmulatorSelection";
             this.groupBox_EmulatorSelection.Size = new System.Drawing.Size(358, 83);
             this.groupBox_EmulatorSelection.TabIndex = 8;
@@ -283,7 +328,7 @@
             this.groupBox_TextReplace.Controls.Add(this.label_AnchorWords);
             this.groupBox_TextReplace.Controls.Add(this.checkBox_TextReplacementEnable);
             this.groupBox_TextReplace.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox_TextReplace.Location = new System.Drawing.Point(12, 224);
+            this.groupBox_TextReplace.Location = new System.Drawing.Point(10, 413);
             this.groupBox_TextReplace.Name = "groupBox_TextReplace";
             this.groupBox_TextReplace.Size = new System.Drawing.Size(359, 162);
             this.groupBox_TextReplace.TabIndex = 9;
@@ -417,7 +462,7 @@
             // button_Run
             // 
             this.button_Run.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_Run.Location = new System.Drawing.Point(12, 569);
+            this.button_Run.Location = new System.Drawing.Point(10, 757);
             this.button_Run.Name = "button_Run";
             this.button_Run.Size = new System.Drawing.Size(55, 28);
             this.button_Run.TabIndex = 10;
@@ -464,7 +509,7 @@
             this.groupBox_ByteCorruption.Controls.Add(this.label_StartByte);
             this.groupBox_ByteCorruption.Controls.Add(this.checkBox_ByteCorruptionEnable);
             this.groupBox_ByteCorruption.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox_ByteCorruption.Location = new System.Drawing.Point(378, 135);
+            this.groupBox_ByteCorruption.Location = new System.Drawing.Point(376, 323);
             this.groupBox_ByteCorruption.Name = "groupBox_ByteCorruption";
             this.groupBox_ByteCorruption.Size = new System.Drawing.Size(358, 251);
             this.groupBox_ByteCorruption.TabIndex = 11;
@@ -883,7 +928,7 @@
             this.groupBox_ColorReplacement.Controls.Add(this.label_ColorsToReplace);
             this.groupBox_ColorReplacement.Controls.Add(this.checkBox_ColorReplacementEnable);
             this.groupBox_ColorReplacement.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox_ColorReplacement.Location = new System.Drawing.Point(12, 394);
+            this.groupBox_ColorReplacement.Location = new System.Drawing.Point(10, 583);
             this.groupBox_ColorReplacement.Name = "groupBox_ColorReplacement";
             this.groupBox_ColorReplacement.Size = new System.Drawing.Size(359, 169);
             this.groupBox_ColorReplacement.TabIndex = 16;
@@ -987,7 +1032,7 @@
             // 
             this.groupBox_NESPalette.Controls.Add(this.pictureBox_NESPalette);
             this.groupBox_NESPalette.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox_NESPalette.Location = new System.Drawing.Point(378, 392);
+            this.groupBox_NESPalette.Location = new System.Drawing.Point(376, 580);
             this.groupBox_NESPalette.Name = "groupBox_NESPalette";
             this.groupBox_NESPalette.Size = new System.Drawing.Size(358, 171);
             this.groupBox_NESPalette.TabIndex = 35;
@@ -1009,7 +1054,7 @@
             // button_NESPaletteHelp
             // 
             this.button_NESPaletteHelp.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_NESPaletteHelp.Location = new System.Drawing.Point(704, 573);
+            this.button_NESPaletteHelp.Location = new System.Drawing.Point(702, 761);
             this.button_NESPaletteHelp.Name = "button_NESPaletteHelp";
             this.button_NESPaletteHelp.Size = new System.Drawing.Size(26, 23);
             this.button_NESPaletteHelp.TabIndex = 16;
@@ -1020,7 +1065,7 @@
             // button_Save
             // 
             this.button_Save.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_Save.Location = new System.Drawing.Point(73, 569);
+            this.button_Save.Location = new System.Drawing.Point(70, 757);
             this.button_Save.Name = "button_Save";
             this.button_Save.Size = new System.Drawing.Size(69, 28);
             this.button_Save.TabIndex = 37;
@@ -1031,7 +1076,7 @@
             // button_Load
             // 
             this.button_Load.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_Load.Location = new System.Drawing.Point(148, 569);
+            this.button_Load.Location = new System.Drawing.Point(146, 757);
             this.button_Load.Name = "button_Load";
             this.button_Load.Size = new System.Drawing.Size(69, 28);
             this.button_Load.TabIndex = 38;
@@ -1044,9 +1089,9 @@
             this.pictureBox1.BackColor = System.Drawing.Color.White;
             this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.pictureBox1.Image = global::Vinesauce_ROM_Corruptor.Properties.Resources.Vinesauce_Mushroom;
-            this.pictureBox1.Location = new System.Drawing.Point(378, 12);
+            this.pictureBox1.Location = new System.Drawing.Point(376, 11);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(358, 117);
+            this.pictureBox1.Size = new System.Drawing.Size(358, 307);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.pictureBox1.TabIndex = 39;
             this.pictureBox1.TabStop = false;
@@ -1055,7 +1100,7 @@
             // 
             this.checkBox_UseTinyURL.AutoSize = true;
             this.checkBox_UseTinyURL.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBox_UseTinyURL.Location = new System.Drawing.Point(223, 577);
+            this.checkBox_UseTinyURL.Location = new System.Drawing.Point(220, 765);
             this.checkBox_UseTinyURL.Name = "checkBox_UseTinyURL";
             this.checkBox_UseTinyURL.Size = new System.Drawing.Size(101, 17);
             this.checkBox_UseTinyURL.TabIndex = 41;
@@ -1065,7 +1110,7 @@
             // button_UseTinyURLHelp
             // 
             this.button_UseTinyURLHelp.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_UseTinyURLHelp.Location = new System.Drawing.Point(330, 573);
+            this.button_UseTinyURLHelp.Location = new System.Drawing.Point(328, 761);
             this.button_UseTinyURLHelp.Name = "button_UseTinyURLHelp";
             this.button_UseTinyURLHelp.Size = new System.Drawing.Size(26, 23);
             this.button_UseTinyURLHelp.TabIndex = 42;
@@ -1077,7 +1122,7 @@
             // 
             this.checkBox_HotkeyEnable.AutoSize = true;
             this.checkBox_HotkeyEnable.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBox_HotkeyEnable.Location = new System.Drawing.Point(363, 577);
+            this.checkBox_HotkeyEnable.Location = new System.Drawing.Point(361, 765);
             this.checkBox_HotkeyEnable.Name = "checkBox_HotkeyEnable";
             this.checkBox_HotkeyEnable.Size = new System.Drawing.Size(109, 17);
             this.checkBox_HotkeyEnable.TabIndex = 43;
@@ -1089,7 +1134,7 @@
             // 
             this.button_HotkeySet.Enabled = false;
             this.button_HotkeySet.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_HotkeySet.Location = new System.Drawing.Point(473, 574);
+            this.button_HotkeySet.Location = new System.Drawing.Point(471, 762);
             this.button_HotkeySet.Name = "button_HotkeySet";
             this.button_HotkeySet.Size = new System.Drawing.Size(26, 23);
             this.button_HotkeySet.TabIndex = 44;
@@ -1100,7 +1145,7 @@
             // button_HotkeyHelp
             // 
             this.button_HotkeyHelp.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_HotkeyHelp.Location = new System.Drawing.Point(505, 574);
+            this.button_HotkeyHelp.Location = new System.Drawing.Point(502, 762);
             this.button_HotkeyHelp.Name = "button_HotkeyHelp";
             this.button_HotkeyHelp.Size = new System.Drawing.Size(26, 23);
             this.button_HotkeyHelp.TabIndex = 45;
@@ -1113,7 +1158,7 @@
             this.AcceptButton = this.button_Run;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(742, 599);
+            this.ClientSize = new System.Drawing.Size(742, 791);
             this.Controls.Add(this.button_HotkeyHelp);
             this.Controls.Add(this.button_HotkeySet);
             this.Controls.Add(this.checkBox_HotkeyEnable);
@@ -1155,8 +1200,8 @@
 
         #endregion
 
-        private System.Windows.Forms.Button button_RomToCorruptBrowse;
-        private System.Windows.Forms.TextBox textBox_RomToCorrupt;
+        private System.Windows.Forms.Button button_RomDirectoryBrowse;
+        private System.Windows.Forms.TextBox textBox_RomDirectory;
         private System.Windows.Forms.Label labelRomToCorrupt;
         private System.Windows.Forms.Label labelSaveLocation;
         private System.Windows.Forms.TextBox textBox_SaveLocation;
@@ -1240,6 +1285,8 @@
         private System.Windows.Forms.CheckBox checkBox_HotkeyEnable;
         private System.Windows.Forms.Button button_HotkeySet;
         private System.Windows.Forms.Button button_HotkeyHelp;
+        private System.Windows.Forms.ListView listView_Files;
+        private System.Windows.Forms.ColumnHeader listViewC_fileName;
     }
 }
 

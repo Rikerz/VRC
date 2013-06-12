@@ -66,14 +66,18 @@ namespace Vinesauce_ROM_Corruptor
 
         static private Process Emulator = null;
 
-        private List<byte> NESCPUJamProtection_Avoid = new List<byte>() { 0x48, 0x08, 0x68, 0x28, 0x78, 0x00, 0x02, 0x12, 0x22, 0x32, 0x42, 0x52, 0x62, 0x72, 0x92, 0xB2, 0xD2, 0xF2 };
-        private List<byte> NESCPUJamProtection_Protect_1 = new List<byte>() { 0x48, 0x08, 0x68, 0x28, 0x78, 0x40, 0x60, 0x00, 0x90, 0xB0, 0xF0, 0x30, 0xD0, 0x10, 0x50, 0x70, 0x4C, 0x6C, 0x20 };
-        private List<byte> NESCPUJamProtection_Protect_2 = new List<byte>() { 0x90, 0xB0, 0xF0, 0x30, 0xD0, 0x10, 0x50, 0x70, 0x4C, 0x6C, 0x20 };
-        private List<byte> NESCPUJamProtection_Protect_3 = new List<byte>() { 0x4C, 0x6C, 0x20 };
+        static private List<byte> NESCPUJamProtection_Avoid = new List<byte>() { 0x48, 0x08, 0x68, 0x28, 0x78, 0x00, 0x02, 0x12, 0x22, 0x32, 0x42, 0x52, 0x62, 0x72, 0x92, 0xB2, 0xD2, 0xF2 };
+        static private List<byte> NESCPUJamProtection_Protect_1 = new List<byte>() { 0x48, 0x08, 0x68, 0x28, 0x78, 0x40, 0x60, 0x00, 0x90, 0xB0, 0xF0, 0x30, 0xD0, 0x10, 0x50, 0x70, 0x4C, 0x6C, 0x20 };
+        static private List<byte> NESCPUJamProtection_Protect_2 = new List<byte>() { 0x90, 0xB0, 0xF0, 0x30, 0xD0, 0x10, 0x50, 0x70, 0x4C, 0x6C, 0x20 };
+        static private List<byte> NESCPUJamProtection_Protect_3 = new List<byte>() { 0x4C, 0x6C, 0x20 };
 
         static public Keys Hotkey = Keys.Space;
         static public HotkeyActions HotkeyAction = HotkeyActions.AddStart;
         static public bool HotkeyEnabled = false;
+
+        static private RomId SelectedROM = null;
+
+        static private string SettingSaveDirectory = "";
 
         public MainForm()
         {
@@ -83,7 +87,12 @@ namespace Vinesauce_ROM_Corruptor
             try
             {
                 string text = File.ReadAllText("VinesauceROMCorruptor.txt");
-                Match m = Regex.Match(text, "(?<=textBox_SaveLocation\\.Text=).*?(?=\r)");
+                Match m = Regex.Match(text, "(?<=textBox_RomDirectory\\.Text=).*?(?=\r)");
+                if (m.Success)
+                {
+                    textBox_RomDirectory.Text = m.Groups[0].Value;
+                }
+                m = Regex.Match(text, "(?<=textBox_SaveLocation\\.Text=).*?(?=\r)");
                 if (m.Success)
                 {
                     textBox_SaveLocation.Text = m.Groups[0].Value;
@@ -93,6 +102,11 @@ namespace Vinesauce_ROM_Corruptor
                 {
                     textBox_EmulatorToRun.Text = m.Groups[0].Value;
                 }
+                m = Regex.Match(text, "(?<=SettingSaveDirectory=).*?(?=\r)");
+                if (m.Success)
+                {
+                    SettingSaveDirectory = m.Groups[0].Value;
+                }
                 m = Regex.Match(text, "(?<=HotkeyEnabled=).*?(?=\r)");
                 if (m.Success)
                 {
@@ -101,13 +115,14 @@ namespace Vinesauce_ROM_Corruptor
                 m = Regex.Match(text, "(?<=Hotkey=).*?(?=\r)");
                 if (m.Success)
                 {
-                    Hotkey = (Keys)Enum.Parse(typeof(Keys),m.Groups[0].Value,false);
+                    Hotkey = (Keys)Enum.Parse(typeof(Keys), m.Groups[0].Value, false);
                 }
                 m = Regex.Match(text, "(?<=HotkeyAction=).*?(?=\r)");
                 if (m.Success)
                 {
                     HotkeyAction = (HotkeyActions)Enum.Parse(typeof(HotkeyActions), m.Groups[0].Value, false);
                 }
+                PopulateFileList();
             }
             catch
             {
@@ -117,23 +132,14 @@ namespace Vinesauce_ROM_Corruptor
 
         private void button_RomToCorruptBrowse_Click(object sender, EventArgs e)
         {
-            button_Run.Focus();
-            OpenFileDialog fDialog = new OpenFileDialog();
-            fDialog.Title = "Select ROM to Corrupt";
-            fDialog.CheckFileExists = true;
-            fDialog.CheckPathExists = true;
-            fDialog.Filter = "All files (*.*)|*.*";
+            listView_Files.Focus();
+            FolderBrowserDialog fDialog = new FolderBrowserDialog();
+            fDialog.Description = "Select ROM Directory";
+            fDialog.SelectedPath = textBox_RomDirectory.Text;
             if (fDialog.ShowDialog() == DialogResult.OK)
             {
-                textBox_RomToCorrupt.Text = fDialog.FileName.ToString();
-            }
-            textBox_RomToCorrupt.SelectionStart = textBox_RomToCorrupt.Text.Length;
-            textBox_RomToCorrupt.ScrollToCaret();
-
-            // Set to end of new ROM if desired.
-            if (checkBox_AutoEnd.Checked)
-            {
-                FindEndOfROM();
+                textBox_RomDirectory.Text = fDialog.SelectedPath;
+                PopulateFileList();
             }
         }
 
@@ -148,10 +154,19 @@ namespace Vinesauce_ROM_Corruptor
             fDialog.OverwritePrompt = false;
             fDialog.Title = "Select Save Location for Corrupted ROM";
             fDialog.Filter = "All files (*.*)|*.*";
+            try
+            {
+                fDialog.InitialDirectory = Path.GetDirectoryName(textBox_SaveLocation.Text);
+            }
+            catch
+            {
+                fDialog.InitialDirectory = "";
+            }
 
             if (fDialog.ShowDialog() == DialogResult.OK)
             {
                 textBox_SaveLocation.Text = fDialog.FileName;
+                PopulateFileList();
             }
             textBox_SaveLocation.SelectionStart = textBox_SaveLocation.Text.Length;
             textBox_SaveLocation.ScrollToCaret();
@@ -172,6 +187,15 @@ namespace Vinesauce_ROM_Corruptor
             fDialog.Filter = "Executable Files|*.exe";
             fDialog.CheckFileExists = true;
             fDialog.CheckPathExists = true;
+            try
+            {
+                fDialog.InitialDirectory = Path.GetDirectoryName(textBox_EmulatorToRun.Text);
+            }
+            catch
+            {
+                fDialog.InitialDirectory = "";
+            }
+
             if (fDialog.ShowDialog() == DialogResult.OK)
             {
                 textBox_EmulatorToRun.Text = fDialog.FileName.ToString();
@@ -225,13 +249,16 @@ namespace Vinesauce_ROM_Corruptor
                 }
             }
 
-            // Read the ROM in.
-            byte[] ROM = null;
-            try
+            // Check that a ROM is selected.
+            if (SelectedROM == null)
             {
-                ROM = File.ReadAllBytes(textBox_RomToCorrupt.Text);
+                MessageBox.Show("No ROM is selected.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
             }
-            catch
+
+            // Read the ROM in.
+            byte[] ROM = SelectedROM.Load();
+            if (ROM == null)
             {
                 MessageBox.Show("Error reading ROM.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
@@ -738,8 +765,8 @@ namespace Vinesauce_ROM_Corruptor
                             {
                                 if (NESCPUJamProtection_Avoid.Contains((byte)((ROM[i] + AddXtoByte) % (Byte.MaxValue + 1)))
                                     || NESCPUJamProtection_Protect_1.Contains(ROM[i])
-                                    || NESCPUJamProtection_Protect_2.Contains(ROM[i-1])
-                                    || NESCPUJamProtection_Protect_3.Contains(ROM[i-2]))
+                                    || NESCPUJamProtection_Protect_2.Contains(ROM[i - 1])
+                                    || NESCPUJamProtection_Protect_3.Contains(ROM[i - 2]))
                                 {
                                     Protected = true;
                                 }
@@ -783,8 +810,8 @@ namespace Vinesauce_ROM_Corruptor
                                 {
                                     if (NESCPUJamProtection_Avoid.Contains(ROM[i])
                                         || NESCPUJamProtection_Protect_1.Contains(ROM[j])
-                                        || NESCPUJamProtection_Protect_2.Contains(ROM[j-1])
-                                        || NESCPUJamProtection_Protect_3.Contains(ROM[j-2]))
+                                        || NESCPUJamProtection_Protect_2.Contains(ROM[j - 1])
+                                        || NESCPUJamProtection_Protect_3.Contains(ROM[j - 2]))
                                     {
                                         Protected = true;
                                     }
@@ -843,6 +870,12 @@ namespace Vinesauce_ROM_Corruptor
             // Start the emulator if desired.
             if (checkBox_RunEmulator.Checked)
             {
+                if (textBox_EmulatorToRun.Text == "")
+                {
+                    MessageBox.Show("No emulator path given.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
                 try
                 {
                     // See if the emulator is already running.
@@ -946,50 +979,36 @@ namespace Vinesauce_ROM_Corruptor
                 "Auto End Help");
         }
 
-        private void FindEndOfROM()
+        private void EnforceAutoEnd()
         {
-            byte[] ROM = null;
-            try
+            if (SelectedROM != null && checkBox_AutoEnd.Checked)
             {
-                ROM = File.ReadAllBytes(textBox_RomToCorrupt.Text);
-            }
-            catch
-            {
-                MessageBox.Show("Error reading ROM.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                checkBox_AutoEnd.Checked = false;
-                return;
-            }
+                long StartByte;
+                try
+                {
+                    StartByte = Convert.ToInt64(textBox_StartByte.Text, 16);
+                }
+                catch
+                {
+                    MessageBox.Show("Invalid start byte.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    checkBox_AutoEnd.Checked = false;
+                    return;
+                }
 
-            long StartByte;
-            try
-            {
-                StartByte = Convert.ToInt64(textBox_StartByte.Text, 16);
+                long MaxByte = SelectedROM.FileLength - 1;
+                if (StartByte > MaxByte)
+                {
+                    StartByte = MaxByte;
+                    textBox_StartByte.Text = MaxByte.ToString("X");
+                }
+                textBox_EndByte.Text = MaxByte.ToString("X");
             }
-            catch
-            {
-                MessageBox.Show("Invalid start byte.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                checkBox_AutoEnd.Checked = false;
-                return;
-            }
-
-            long MaxByte = ROM.LongLength - 1;
-            if (StartByte > MaxByte)
-            {
-                StartByte = MaxByte;
-                textBox_StartByte.Text = MaxByte.ToString("X");
-            }
-            textBox_EndByte.Text = MaxByte.ToString("X");
         }
 
         private void checkBox_AutoEnd_CheckedChanged(object sender, EventArgs e)
         {
             if (checkBox_ByteCorruptionEnable.Checked)
             {
-                if (checkBox_AutoEnd.Checked)
-                {
-                    FindEndOfROM();
-                }
-
                 label_EndByte.Enabled = !checkBox_AutoEnd.Checked;
                 textBox_EndByte.Enabled = !checkBox_AutoEnd.Checked;
                 button_EndByteUp.Enabled = !checkBox_AutoEnd.Checked;
@@ -997,6 +1016,8 @@ namespace Vinesauce_ROM_Corruptor
                 button_RangeUp.Enabled = !checkBox_AutoEnd.Checked;
                 button_RangeDown.Enabled = !checkBox_AutoEnd.Checked;
             }
+
+            EnforceAutoEnd();
         }
 
         private void button_StartByteUp_Click(object sender, EventArgs e)
@@ -1393,6 +1414,7 @@ namespace Vinesauce_ROM_Corruptor
                 fDialog.OverwritePrompt = true;
                 fDialog.Title = "Select Save Location for Corruption Settings";
                 fDialog.Filter = "Text Documents (*.txt)|*.txt";
+                fDialog.InitialDirectory = SettingSaveDirectory;
 
                 if (fDialog.ShowDialog() == DialogResult.OK)
                 {
@@ -1411,6 +1433,15 @@ namespace Vinesauce_ROM_Corruptor
                     {
                         MessageBox.Show("Error saving corruption settings.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
+                    }
+
+                    try
+                    {
+                        SettingSaveDirectory = Path.GetDirectoryName(fDialog.FileName);
+                    }
+                    catch
+                    {
+                        SettingSaveDirectory = "";
                     }
                 }
             }
@@ -1446,6 +1477,7 @@ namespace Vinesauce_ROM_Corruptor
 
                     // Load the settings.
                     StringToSettings(text);
+                    EnforceAutoEnd();
                 }
                 catch
                 {
@@ -1460,6 +1492,7 @@ namespace Vinesauce_ROM_Corruptor
                 fDialog.Filter = "Text Documents (*.txt)|*.txt";
                 fDialog.CheckFileExists = true;
                 fDialog.CheckPathExists = true;
+                fDialog.InitialDirectory = SettingSaveDirectory;
 
                 if (fDialog.ShowDialog() == DialogResult.OK)
                 {
@@ -1467,11 +1500,21 @@ namespace Vinesauce_ROM_Corruptor
                     {
                         // Load the settings from the file.
                         StringToSettings(File.ReadAllText(fDialog.FileName));
+                        EnforceAutoEnd();
                     }
                     catch
                     {
                         MessageBox.Show("Error loading corruption settings.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
+                    }
+
+                    try
+                    {
+                        SettingSaveDirectory = Path.GetDirectoryName(fDialog.FileName);
+                    }
+                    catch
+                    {
+                        SettingSaveDirectory = "";
                     }
                 }
             }
@@ -1496,7 +1539,10 @@ namespace Vinesauce_ROM_Corruptor
             StringBuilder sb = new StringBuilder();
 
             // ROM to corrupt.
-            sb.AppendLine("textBox_RomToCorrupt.Text=" + textBox_RomToCorrupt.Text);
+            SelectedROM.ComputeHash();
+            sb.AppendLine("ROM.FileName=" + SelectedROM.FileName);
+            sb.AppendLine("ROM.FileLength=" + String.Format("{0:X}", SelectedROM.FileLength));
+            sb.AppendLine("ROM.Hash=" + SelectedROM.HashStringBase64);
 
             // General settings.
             sb.AppendLine("checkBox_EnableNESCPUJamProtection.Checked=" + checkBox_EnableNESCPUJamProtection.Checked.ToString());
@@ -1534,11 +1580,56 @@ namespace Vinesauce_ROM_Corruptor
 
         private void StringToSettings(string text)
         {
+
             // ROM to corrupt.
-            Match m = Regex.Match(text, "(?<=textBox_RomToCorrupt\\.Text=).*?(?=\r)");
+            string TargetROMFileName = "";
+            long TargetROMFileLength = 0;
+            byte[] TargetROMHash = null;
+            Match m = Regex.Match(text, "(?<=ROM\\.FileName=).*?(?=\r)");
             if (m.Success)
             {
-                textBox_RomToCorrupt.Text = m.Groups[0].Value;
+                TargetROMFileName = Path.GetFileName(m.Groups[0].Value);
+            }
+            m = Regex.Match(text, "(?<=ROM\\.FileLength=).*?(?=\r)");
+            if (m.Success)
+            {
+                TargetROMFileLength = Convert.ToInt64(m.Groups[0].Value, 16);
+            }
+            m = Regex.Match(text, "(?<=ROM\\.Hash=).*?(?=\r)");
+            if (m.Success)
+            {
+                TargetROMHash = Convert.FromBase64String(m.Groups[0].Value);
+            }
+
+            // Backwards compatibility.
+            if (TargetROMFileName == "")
+            {
+                m = Regex.Match(text, "(?<=textBox_RomToCorrupt\\.Text=).*?(?=\r)");
+                if (m.Success)
+                {
+                    TargetROMFileName = Path.GetFileName(m.Groups[0].Value);
+                }
+            }
+
+            // Select the ROM.
+            bool success = false;
+            if (TargetROMHash != null)
+            {
+                success = SelectROMWithFileLengthAndHash(TargetROMFileLength, TargetROMHash);
+            }
+            if (!success && TargetROMFileName != "")
+            {
+                success = SelectROMWithFileName(TargetROMFileName);
+                if (success)
+                {
+                    MessageBox.Show("The ROM selected was matched on the name of the file, not its hash. This file may be different than the intended corruption target file.",
+                        "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+                else
+                {
+                    MessageBox.Show("No ROM matching the target hash or name could be found in the selected directory. Please select the correct directory and load the corruption settings again.",
+                        "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
             }
 
             // Enable checkboxes.
@@ -1781,7 +1872,7 @@ namespace Vinesauce_ROM_Corruptor
         {
             button_Run.Focus();
             MessageBox.Show("When this box is checked, a hotkey is enabled that will change the byte corruption range, corrupt the ROM, close the emulator, and re-run the ROM. This is useful for quickly attempting many corruptions. The default hotkey is the spacebar, but can be set to any key via the \"...\" button."
-                +" The default change to the byte corruption range is to add the increment to the start byte, but can be set to one of six actions via the \"...\" button",
+                + " The default change to the byte corruption range is to add the increment to the start byte, but can be set to one of six actions via the \"...\" button",
                 "Hotkey Help");
         }
 
@@ -1791,7 +1882,7 @@ namespace Vinesauce_ROM_Corruptor
             form.StartPosition = FormStartPosition.CenterParent;
             form.ShowDialog();
             while (form.Visible == true)
-            this.Enabled = false;
+                this.Enabled = false;
         }
 
         private void checkBox_HotkeyEnable_CheckedChanged(object sender, EventArgs e)
@@ -1809,8 +1900,10 @@ namespace Vinesauce_ROM_Corruptor
                 StreamWriter sw = new StreamWriter("VinesauceROMCorruptor.txt", false);
 
                 // Write the save location and emulator to run.
+                sw.WriteLine("textBox_RomDirectory.Text=" + textBox_RomDirectory.Text);
                 sw.WriteLine("textBox_SaveLocation.Text=" + textBox_SaveLocation.Text);
                 sw.WriteLine("textBox_EmulatorToRun.Text=" + textBox_EmulatorToRun.Text);
+                sw.WriteLine("SettingSaveDirectory=" + SettingSaveDirectory);
                 sw.WriteLine("HotkeyEnabled=" + checkBox_HotkeyEnable.Checked);
                 sw.WriteLine("Hotkey=" + Hotkey);
                 sw.WriteLine("HotkeyAction=" + HotkeyAction);
@@ -1821,6 +1914,96 @@ namespace Vinesauce_ROM_Corruptor
             catch
             {
                 // Do nothing, stop exception.
+            }
+        }
+
+        private void PopulateFileList()
+        {
+            string[] FilePaths;
+            try
+            {
+                FilePaths = Directory.GetFiles(textBox_RomDirectory.Text);
+            }
+            catch
+            {
+                return;
+            }
+
+            listView_Files.Items.Clear();
+            listView_Files.Focus();
+            if (FilePaths.Length > 0)
+            {
+                foreach (string FilePath in FilePaths)
+                {
+                    if (FilePath != textBox_SaveLocation.Text)
+                    {
+                        RomId id = new RomId(FilePath);
+                        if (id.FileLength > 0)
+                        {
+                            listView_Files.Items.Add(id.GetListViewItem());
+                        }
+                    }
+                }
+                listView_Files.Items[0].Selected = true;
+            }
+            else
+            {
+                SelectedROM = null;
+            }
+        }
+
+        private bool SelectROMWithFileLengthAndHash(long FileLength, byte[] Hash)
+        {
+            bool success = false;
+            foreach (ListViewItem item in listView_Files.Items)
+            {
+                RomId id = (RomId)item.Tag;
+                if (id.MatchesFileLength(FileLength))
+                {
+                    id.ComputeHash();
+                    if (id.MatchesHash(Hash))
+                    {
+                        success = true;
+                        listView_Files.Focus();
+                        if (item.Index >= 4)
+                        {
+                            listView_Files.TopItem = listView_Files.Items[item.Index-4];
+                        }
+                        item.Selected = true;
+                        break;
+                    }
+                }
+            }
+            return success;
+        }
+
+        private bool SelectROMWithFileName(string FileName)
+        {
+            bool success = false;
+            foreach (ListViewItem item in listView_Files.Items)
+            {
+                RomId id = (RomId)item.Tag;
+                if (id.MatchesFileName(FileName))
+                {
+                    success = true;
+                    listView_Files.Focus();
+                    if (item.Index >= 4)
+                    {
+                        listView_Files.TopItem = listView_Files.Items[item.Index - 4];
+                    }
+                    item.Selected = true;
+                    break;
+                }
+            }
+            return success;
+        }
+
+        private void listView_Files_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
+        {
+            if (e.IsSelected)
+            {
+                SelectedROM = (RomId)e.Item.Tag;
+                EnforceAutoEnd();
             }
         }
     }

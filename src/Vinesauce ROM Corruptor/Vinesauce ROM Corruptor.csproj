@@ -64,6 +64,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RomId.cs" />
     <EmbeddedResource Include="HotkeyForm.resx">
       <DependentUpon>HotkeyForm.cs</DependentUpon>
     </EmbeddedResource>
