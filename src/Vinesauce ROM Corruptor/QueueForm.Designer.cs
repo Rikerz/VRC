@@ -1,4 +1,24 @@
-﻿namespace Vinesauce_ROM_Corruptor
+﻿/* 
+ * Copyright (C) 2013 Ryan Sammon.
+ * 
+ * This file is part of the Vinesauce ROM Corruptor.
+ * 
+ * The Vinesauce ROM Corruptor is free software: you can redistribute
+ * it and/or modify it under the terms of the GNU General Public 
+ * License as published by the Free Software Foundation, either 
+ * version 3 of the License, or (at your option) any later version.
+ * 
+ * The Vinesauce ROM Corruptor is distributed in the hope that it
+ * will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+ * See the GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with the Vinesauce ROM Corruptor.  If not, see 
+ * <http://www.gnu.org/licenses/>.
+ */
+
+namespace Vinesauce_ROM_Corruptor
 {
     partial class QueueForm
     {
