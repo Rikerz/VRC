@@ -264,595 +264,31 @@ namespace Vinesauce_ROM_Corruptor
                 return;
             }
 
-            // Read in all of the text boxes.
-            long StartByte;
-            try
+            if (checkBox_QueueEnable.Checked)
             {
-                StartByte = Convert.ToInt64(textBox_StartByte.Text, 16);
-            }
-            catch
-            {
-                MessageBox.Show("Invalid start byte.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            long EndByte;
-            try
-            {
-                EndByte = Convert.ToInt64(textBox_EndByte.Text, 16);
-            }
-            catch
-            {
-                MessageBox.Show("Invalid end byte.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            uint EveryNthByte;
-            try
-            {
-                EveryNthByte = Convert.ToUInt32(textBox_EveryNBytes.Text);
-            }
-            catch
-            {
-                MessageBox.Show("Invalid byte corruption interval.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-            if (EveryNthByte == 0)
-            {
-                MessageBox.Show("Invalid byte corruption interval.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            int AddXtoByte;
-            try
-            {
-                AddXtoByte = Convert.ToInt32(textBox_AddXToByte.Text);
-            }
-            catch
-            {
-                MessageBox.Show("Invalid byte addition value.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            int ShiftRightXBytes;
-            try
-            {
-                ShiftRightXBytes = Convert.ToInt32(textBox_ShiftRightXBytes.Text);
-            }
-            catch
-            {
-                MessageBox.Show("Invalid right shift value.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            byte ReplaceByteXwithYByteX;
-            try
-            {
-                ReplaceByteXwithYByteX = Convert.ToByte(textBox_ReplaceByteXwithYByteX.Text, 16);
-            }
-            catch
-            {
-                MessageBox.Show("Invalid byte to match.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            byte ReplaceByteXwithYByteY;
-            try
-            {
-                ReplaceByteXwithYByteY = Convert.ToByte(textBox_ReplaceByteXwithYByteY.Text, 16);
-            }
-            catch
-            {
-                MessageBox.Show("Invalid byte replacement.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            // Limit the end byte.
-            if (EndByte > (ROM.LongLength - 1))
-            {
-                EndByte = ROM.LongLength - 1;
-            }
-
-            // Areas to not corrupt.
-            List<long[]> ProtectedRegions = new List<long[]>();
-
-            // Delimeter for text sections.
-            char[] Delimeter = new char[1] { '|' };
-
-            // Do text replacement if desired.
-            if (checkBox_TextReplacementEnable.Checked)
-            {
-                // Translation dictionary.
-                Dictionary<char, byte> TranslationDictionary = new Dictionary<char, byte>();
-
-                // Read in the text and its replacement.
-                string[] TextToReplace = textBox_TextToReplace.Text.Split(Delimeter, StringSplitOptions.RemoveEmptyEntries);
-                string[] ReplaceWith = textBox_ReplaceWith.Text.Split(Delimeter, StringSplitOptions.RemoveEmptyEntries);
-
-                // Make sure they have equal length.
-                if (TextToReplace.Length != ReplaceWith.Length)
+                QueueForm.CorruptionQueue.Add(new string[] { "Current", CorruptionSettingsToString() });
+                foreach (string[] Entry in QueueForm.CorruptionQueue)
                 {
-                    MessageBox.Show("Number of text sections to replace does not match number of replacements.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-
-                // Create relative offset arrays of the anchors.
-                string[] Anchors = textBox_AnchorWords.Text.Split(Delimeter, StringSplitOptions.RemoveEmptyEntries);
-                int[][] RelativeAnchors = new int[Anchors.Length][];
-                for (int i = 0; i < Anchors.Length; i++)
-                {
-                    RelativeAnchors[i] = new int[Anchors[i].Length];
-                    for (int j = 0; j < Anchors[i].Length; j++)
+                    StringToCorruptionSettings(Entry[1]);
+                    ROM = Corrupt(ROM);
+                    if (ROM == null)
                     {
-                        RelativeAnchors[i][j] = Anchors[i][j] - Anchors[i][0];
-                    }
-                }
-
-                // Look for the anchors.
-                for (int i = 0; i < RelativeAnchors.Length; i++)
-                {
-                    // Position in ROM.
-                    long j = 0;
-
-                    // Scan the entire ROM.
-                    while (j < ROM.LongLength)
-                    {
-                        // If a match has been found.
-                        bool Match = true;
-
-                        // Look for the relative values.
-                        for (int k = 0; k < RelativeAnchors[i].Length; k++)
-                        {
-                            // Make sure its in range.
-                            if (j + k < ROM.LongLength)
-                            {
-                                // Ignore non-letter characters for matching purposes.
-                                if (!Char.IsLetter(Anchors[i][k]))
-                                {
-                                    continue;
-                                }
-
-                                // Check if the relative value doesn't match.
-                                if ((ROM[j + k] - ROM[j]) != RelativeAnchors[i][k])
-                                {
-                                    // It doesn't, break.
-                                    Match = false;
-                                    break;
-                                }
-                            }
-                            else
-                            {
-                                // Out of range before matching.
-                                Match = false;
-                                break;
-                            }
-                        }
-
-                        // If a match was found, update the dictionary.
-                        if (Match)
-                        {
-                            int k = 0;
-                            for (k = 0; k < Anchors[i].Length; k++)
-                            {
-                                if (!TranslationDictionary.ContainsKey(Anchors[i][k]))
-                                {
-                                    TranslationDictionary.Add(Anchors[i][k], ROM[j + k]);
-                                }
-                            }
-
-                            // Move ahead to the correct location in the ROM.
-                            j = j + k + 1;
-                        }
-                        else
-                        {
-                            // Move ahead one byte.
-                            j = j + 1;
-                        }
-                    }
-                }
-
-                // Calculate the offset to translate unknown text, assuming ASCII structure.
-                int ASCIIOffset = 0;
-                if (TranslationDictionary.Count > 0)
-                {
-                    ASCIIOffset = TranslationDictionary.First().Value - TranslationDictionary.First().Key;
-                }
-
-                // Create arrays of the text to be replaced in ROM format.
-                byte[][] ByteTextToReplace = new byte[TextToReplace.Length][];
-                for (int i = 0; i < TextToReplace.Length; i++)
-                {
-                    ByteTextToReplace[i] = new byte[TextToReplace[i].Length];
-                    for (int j = 0; j < TextToReplace[i].Length; j++)
-                    {
-                        if (TranslationDictionary.ContainsKey(TextToReplace[i][j]))
-                        {
-                            ByteTextToReplace[i][j] = TranslationDictionary[TextToReplace[i][j]];
-                        }
-                        else
-                        {
-                            int ASCIITranslated = TextToReplace[i][j] + ASCIIOffset;
-                            if (ASCIITranslated >= Byte.MinValue && ASCIITranslated <= Byte.MaxValue)
-                            {
-                                ByteTextToReplace[i][j] = (byte)(ASCIITranslated);
-                            }
-                            else
-                            {
-                                // Could not translate.
-                                ByteTextToReplace[i][j] = (byte)(TextToReplace[i][j]);
-                            }
-                        }
-                    }
-                }
-
-                // Create arrays of the replacement text in ROM format.
-                byte[][] ByteReplaceWith = new byte[ReplaceWith.Length][];
-                for (int i = 0; i < ReplaceWith.Length; i++)
-                {
-                    ByteReplaceWith[i] = new byte[ReplaceWith[i].Length];
-                    for (int j = 0; j < ReplaceWith[i].Length; j++)
-                    {
-                        if (TranslationDictionary.ContainsKey(ReplaceWith[i][j]))
-                        {
-                            ByteReplaceWith[i][j] = TranslationDictionary[ReplaceWith[i][j]];
-                        }
-                        else
-                        {
-                            int ASCIITranslated = ReplaceWith[i][j] + ASCIIOffset;
-                            if (ASCIITranslated >= Byte.MinValue && ASCIITranslated <= Byte.MaxValue)
-                            {
-                                ByteReplaceWith[i][j] = (byte)(ASCIITranslated);
-                            }
-                            else
-                            {
-                                // Could not translate.
-                                ByteReplaceWith[i][j] = (byte)(ReplaceWith[i][j]);
-                            }
-                        }
-                    }
-                }
-
-                // Area of ROM to consider.
-                long TextReplacementStartByte = 0;
-                long TextReplacementEndByte = ROM.LongLength - 1;
-
-                // Change area if using the byte corruption range.
-                if (checkBox_TextUseByteCorruptionRange.Checked)
-                {
-                    TextReplacementStartByte = StartByte;
-                    TextReplacementEndByte = EndByte;
-                }
-
-                // Look for the text to replace.
-                for (int i = 0; i < ByteTextToReplace.Length; i++)
-                {
-                    // Position in ROM.
-                    long j = TextReplacementStartByte;
-
-                    // Scan the entire ROM.
-                    while (j <= TextReplacementEndByte)
-                    {
-                        // If a match has been found.
-                        bool Match = true;
-
-                        // Look for the text.
-                        for (int k = 0; k < ByteTextToReplace[i].Length; k++)
-                        {
-                            // Make sure its in range.
-                            if (j + k <= TextReplacementEndByte)
-                            {
-                                // Ignore non-letter characters for matching purposes.
-                                if (!Char.IsLetter(TextToReplace[i][k]))
-                                {
-                                    continue;
-                                }
-
-                                // Check if the relative value doesn't match.
-                                if (ROM[j + k] != ByteTextToReplace[i][k])
-                                {
-                                    // It doesn't, break.
-                                    Match = false;
-                                    break;
-                                }
-                            }
-                            else
-                            {
-                                // Out of range before matching.
-                                Match = false;
-                                break;
-                            }
-                        }
-
-                        // If the entire string matched, replace it.
-                        if (Match)
-                        {
-                            // If the area is protected.
-                            bool Protected = false;
-
-                            // Length of the replacement.
-                            int k = ByteReplaceWith[i].Length - 1;
-
-                            // Check if the area is protected.
-                            foreach (long[] ProtectedRegion in ProtectedRegions)
-                            {
-                                if ((j >= ProtectedRegion[0] && j <= ProtectedRegion[1]) || (j + k >= ProtectedRegion[0] && j + k <= ProtectedRegion[1]) || (j < ProtectedRegion[0] && j + k > ProtectedRegion[1]))
-                                {
-                                    // Yes, its protected.
-                                    Protected = true;
-                                    break;
-                                }
-                            }
-
-                            // If not protected, replace the text.
-                            if (!Protected)
-                            {
-                                for (k = 0; k < ByteReplaceWith[i].Length; k++)
-                                {
-                                    ROM[j + k] = ByteReplaceWith[i][k];
-                                }
-
-                                // Protect the inserted text.
-                                ProtectedRegions.Add(new long[2] { j, j + k });
-                            }
-
-                            // Move ahead to the correct location in the ROM.
-                            j = j + k + 1;
-                        }
-                        else
-                        {
-                            // Move ahead one byte.
-                            j = j + 1;
-                        }
-                    }
-                }
-            }
-
-            // Do color replacement if desired.
-            if (checkBox_ColorReplacementEnable.Checked)
-            {
-                // Read in the text and its replacement.
-                string[] ColorsToReplace = textBox_ColorsToReplace.Text.Split(Delimeter, StringSplitOptions.RemoveEmptyEntries);
-                string[] ColorsReplaceWith = textBox_ReplaceWithColors.Text.Split(Delimeter, StringSplitOptions.RemoveEmptyEntries);
-
-                // Make sure they have equal length.
-                if (ColorsToReplace.Length != ColorsReplaceWith.Length)
-                {
-                    MessageBox.Show("Number of colors to replace does not match number of replacements.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-
-                // Convert the strings.
-                byte[] ColorsToReplaceBytes = new byte[ColorsToReplace.Length];
-                byte[] ColorsReplaceWithBytes = new byte[ColorsReplaceWith.Length];
-                for (int i = 0; i < ColorsToReplace.Length; i++)
-                {
-                    try
-                    {
-                        byte Converted = Convert.ToByte(ColorsToReplace[i], 16);
-                        ColorsToReplaceBytes[i] = Converted;
-                    }
-                    catch
-                    {
-                        MessageBox.Show("Invalid color to replace.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("Previous error encountered corrupting using \"" + Entry[0] + "\" corruption settings in queue.",
+                            "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        StringToCorruptionSettings(Enumerable.Last(QueueForm.CorruptionQueue)[1]);
+                        QueueForm.CorruptionQueue.RemoveAt(QueueForm.CorruptionQueue.Count - 1);
                         return;
                     }
                 }
-                for (int i = 0; i < ColorsReplaceWithBytes.Length; i++)
-                {
-                    try
-                    {
-                        byte Converted = Convert.ToByte(ColorsReplaceWith[i], 16);
-                        ColorsReplaceWithBytes[i] = Converted;
-                    }
-                    catch
-                    {
-                        MessageBox.Show("Invalid color replacement.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
-                    }
-                }
-
-                // Area of ROM to consider.
-                long ColorReplacementStartByte = 0;
-                long ColorReplacementEndByte = ROM.LongLength - 1;
-
-                // Change area if using the byte corruption range.
-                if (checkBox_ColorUseByteCorruptionRange.Checked)
-                {
-                    ColorReplacementStartByte = StartByte;
-                    ColorReplacementEndByte = EndByte;
-                }
-
-                // Position in ROM.
-                long j = ColorReplacementStartByte;
-
-                // Scan the entire ROM.
-                while (j <= ColorReplacementEndByte)
-                {
-                    // If a palette has been found.
-                    bool Palette = true;
-
-                    // Look for a palette.
-                    for (int k = 0; k < 4; k++)
-                    {
-                        // Make sure its in range.
-                        if (j + k <= ColorReplacementEndByte)
-                        {
-                            // Check if value exceeds the maximum valid color value.
-                            if (ROM[j + k] > 0x3F)
-                            {
-                                // It does, break.
-                                Palette = false;
-                                break;
-                            }
-                        }
-                        else
-                        {
-                            // Out of range before matching.
-                            Palette = false;
-                            break;
-                        }
-                    }
-
-                    // If a possible palette was found, do color replacement.
-                    if (Palette)
-                    {
-                        for (int i = 0; i < ColorsToReplaceBytes.Length; i++)
-                        {
-                            for (int k = 0; k < 4; k++)
-                            {
-                                if (ROM[j + k] == ColorsToReplaceBytes[i])
-                                {
-                                    // If the byte is protected.
-                                    bool Protected = false;
-
-                                    // Check if the byte is protected.
-                                    foreach (long[] ProtectedRegion in ProtectedRegions)
-                                    {
-                                        if (j + k >= ProtectedRegion[0] && j + k <= ProtectedRegion[1])
-                                        {
-                                            // Yes, its protected.
-                                            Protected = true;
-                                            break;
-                                        }
-                                    }
-
-                                    // If its not protected, do the replacement.
-                                    if (!Protected)
-                                    {
-                                        ROM[j + k] = ColorsReplaceWithBytes[i];
-                                        ProtectedRegions.Add(new long[2] { j + k, j + k });
-                                    }
-                                }
-                            }
-                        }
-
-                        // Move ahead to the correct location in the ROM.
-                        j = j + 4;
-                    }
-                    else
-                    {
-                        // Move ahead one byte.
-                        j = j + 1;
-                    }
-                }
+                StringToCorruptionSettings(Enumerable.Last(QueueForm.CorruptionQueue)[1]);
+                QueueForm.CorruptionQueue.RemoveAt(QueueForm.CorruptionQueue.Count - 1);
             }
-
-            // Do byte corruption if desired.
-            if (checkBox_ByteCorruptionEnable.Checked)
+            else
             {
-                if (radioButton_AddXToByte.Checked && AddXtoByte != 0)
+                ROM = Corrupt(ROM);
+                if (ROM == null)
                 {
-                    for (long i = StartByte + EveryNthByte; i <= EndByte; i = i + EveryNthByte)
-                    {
-                        // If the byte is protected.
-                        bool Protected = false;
-
-                        // Check if the byte is protected.
-                        foreach (long[] ProtectedRegion in ProtectedRegions)
-                        {
-                            if (i >= ProtectedRegion[0] && i <= ProtectedRegion[1])
-                            {
-                                // Yes, its protected.
-                                Protected = true;
-                                break;
-                            }
-                        }
-
-                        // Do NES CPU jam protection if desired.
-                        if (checkBox_EnableNESCPUJamProtection.Checked)
-                        {
-                            if (!Protected && i >= 2)
-                            {
-                                if (NESCPUJamProtection_Avoid.Contains((byte)((ROM[i] + AddXtoByte) % (Byte.MaxValue + 1)))
-                                    || NESCPUJamProtection_Protect_1.Contains(ROM[i])
-                                    || NESCPUJamProtection_Protect_2.Contains(ROM[i - 1])
-                                    || NESCPUJamProtection_Protect_3.Contains(ROM[i - 2]))
-                                {
-                                    Protected = true;
-                                }
-                            }
-                        }
-
-                        // If the byte is not protected, corrupt it.
-                        if (!Protected)
-                        {
-                            int NewValue = (ROM[i] + AddXtoByte) % (Byte.MaxValue + 1);
-                            ROM[i] = (byte)NewValue;
-                        }
-                    }
-                }
-                else if (radioButton_ShiftRightXBytes.Checked && ShiftRightXBytes != 0)
-                {
-                    for (long i = StartByte + EveryNthByte; i <= EndByte; i = i + EveryNthByte)
-                    {
-                        long j = i + ShiftRightXBytes;
-
-                        if (j >= StartByte && j <= EndByte)
-                        {
-                            // If the byte is protected.
-                            bool Protected = false;
-
-                            // Check if the byte is protected.
-                            foreach (long[] ProtectedRegion in ProtectedRegions)
-                            {
-                                if (j >= ProtectedRegion[0] && j <= ProtectedRegion[1])
-                                {
-                                    // Yes, its protected.
-                                    Protected = true;
-                                    break;
-                                }
-                            }
-
-                            // Do NES CPU jam protection if desired.
-                            if (checkBox_EnableNESCPUJamProtection.Checked)
-                            {
-                                if (!Protected && j >= 2)
-                                {
-                                    if (NESCPUJamProtection_Avoid.Contains(ROM[i])
-                                        || NESCPUJamProtection_Protect_1.Contains(ROM[j])
-                                        || NESCPUJamProtection_Protect_2.Contains(ROM[j - 1])
-                                        || NESCPUJamProtection_Protect_3.Contains(ROM[j - 2]))
-                                    {
-                                        Protected = true;
-                                    }
-                                }
-                            }
-
-                            // If the byte is not protected, corrupt it.
-                            if (!Protected)
-                            {
-                                ROM[j] = ROM[i];
-                            }
-                        }
-                    }
-                }
-                else if (radioButton_ReplaceByteXwithY.Checked && ReplaceByteXwithYByteX != ReplaceByteXwithYByteY)
-                {
-                    for (long i = StartByte + EveryNthByte; i <= EndByte; i = i + EveryNthByte)
-                    {
-                        if (ROM[i] == ReplaceByteXwithYByteX)
-                        {
-                            // If the byte is protected.
-                            bool Protected = false;
-
-                            // Check if the byte is protected.
-                            foreach (long[] ProtectedRegion in ProtectedRegions)
-                            {
-                                if (i >= ProtectedRegion[0] && i <= ProtectedRegion[1])
-                                {
-                                    // Yes, its protected.
-                                    Protected = true;
-                                    break;
-                                }
-                            }
-
-                            // If the byte is not protected, corrupt it.
-                            if (!Protected)
-                            {
-                                ROM[i] = ReplaceByteXwithYByteY;
-                            }
-                        }
-                    }
+                    return;
                 }
             }
 
@@ -1365,7 +801,7 @@ namespace Vinesauce_ROM_Corruptor
                     UriBuilder ub = new UriBuilder();
                     ub.Host = "tinyurl.com";
                     ub.Path = "/api-create.php";
-                    ub.Query = "url=" + SettingsToString();
+                    ub.Query = "url=" + FileSettingsToString() + CorruptionSettingsToString() + QueueSettingsToString();
                     response = wc.DownloadString(ub.Uri);
                 }
                 catch
@@ -1424,7 +860,7 @@ namespace Vinesauce_ROM_Corruptor
                         StreamWriter sw = new StreamWriter(fDialog.FileName);
 
                         // Write the settings to the file.
-                        sw.Write(SettingsToString());
+                        sw.Write(FileSettingsToString() + CorruptionSettingsToString() + QueueSettingsToString());
 
                         // Close the file.
                         sw.Close();
@@ -1476,7 +912,9 @@ namespace Vinesauce_ROM_Corruptor
                     text = Uri.UnescapeDataString(text);
 
                     // Load the settings.
-                    StringToSettings(text);
+                    StringToFileSettings(text);
+                    StringToCorruptionSettings(text);
+                    StringToQueueSettings(text);
                     EnforceAutoEnd();
                 }
                 catch
@@ -1499,7 +937,10 @@ namespace Vinesauce_ROM_Corruptor
                     try
                     {
                         // Load the settings from the file.
-                        StringToSettings(File.ReadAllText(fDialog.FileName));
+                        string text = File.ReadAllText(fDialog.FileName);
+                        StringToFileSettings(text);
+                        StringToCorruptionSettings(text);
+                        StringToQueueSettings(text);
                         EnforceAutoEnd();
                     }
                     catch
@@ -1534,7 +975,7 @@ namespace Vinesauce_ROM_Corruptor
                 "Replace Byte X with Y Help");
         }
 
-        private string SettingsToString()
+        private string FileSettingsToString()
         {
             StringBuilder sb = new StringBuilder();
 
@@ -1543,6 +984,13 @@ namespace Vinesauce_ROM_Corruptor
             sb.AppendLine("ROM.FileName=" + SelectedROM.FileName);
             sb.AppendLine("ROM.FileLength=" + String.Format("{0:X}", SelectedROM.FileLength));
             sb.AppendLine("ROM.Hash=" + SelectedROM.HashStringBase64);
+
+            return sb.ToString();
+        }
+
+        private string CorruptionSettingsToString()
+        {
+            StringBuilder sb = new StringBuilder();
 
             // General settings.
             sb.AppendLine("checkBox_EnableNESCPUJamProtection.Checked=" + checkBox_EnableNESCPUJamProtection.Checked.ToString());
@@ -1578,9 +1026,26 @@ namespace Vinesauce_ROM_Corruptor
             return sb.ToString();
         }
 
-        private void StringToSettings(string text)
+        private string QueueSettingsToString()
         {
+            StringBuilder sb = new StringBuilder();
 
+            sb.AppendLine("checkBox_QueueEnable.Checked=" + checkBox_QueueEnable.Checked.ToString());
+
+            foreach (string[] Entry in QueueForm.CorruptionQueue)
+            {
+
+                sb.AppendLine("Queue_Entry_Start");
+                sb.AppendLine("Identifier=" + Entry[0]);
+                sb.Append(Entry[1]);
+                sb.AppendLine("Queue_Entry_End");
+            }
+
+            return sb.ToString();
+        }
+
+        private void StringToFileSettings(string text)
+        {
             // ROM to corrupt.
             string TargetROMFileName = "";
             long TargetROMFileLength = 0;
@@ -1631,10 +1096,13 @@ namespace Vinesauce_ROM_Corruptor
                         "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
+        }
 
+        public void StringToCorruptionSettings(string text)
+        {
             // Enable checkboxes.
             // Text replacement.
-            m = Regex.Match(text, "(?<=checkBox_TextReplacementEnable\\.Checked=).*?(?=\r)");
+            Match m = Regex.Match(text, "(?<=checkBox_TextReplacementEnable\\.Checked=).*?(?=\r)");
             if (m.Success)
             {
                 if (m.Groups[0].Value == "True")
@@ -1854,6 +1322,38 @@ namespace Vinesauce_ROM_Corruptor
             }
         }
 
+        public void StringToQueueSettings(string text)
+        {
+            Match m = Regex.Match(text, "(?<=checkBox_QueueEnable\\.Checked=).*?(?=\r)");
+            if (m.Success)
+            {
+                if (m.Groups[0].Value == "True")
+                {
+                    checkBox_QueueEnable.Checked = true;
+                }
+                else
+                {
+                    checkBox_QueueEnable.Checked = false;
+                }
+            }
+
+            QueueForm.CorruptionQueue.Clear();
+            MatchCollection entries = Regex.Matches(text, "(?<=Queue_Entry_Start\r\n).*?(?=Queue_Entry_End\r\n)", RegexOptions.Singleline);
+            foreach (Match entry in entries)
+            {
+                if (entry.Success)
+                {
+                    string id = "";
+                    m = Regex.Match(entry.Groups[0].Value, "(?<=Identifier=).*?(?=\r)");
+                    if (m.Success)
+                    {
+                        id = m.Groups[0].Value;
+                    }
+                    QueueForm.CorruptionQueue.Add(new string[] { id, entry.Groups[0].Value });
+                }
+            }
+        }
+
         private void button_UseTinyURLHelp_Click(object sender, EventArgs e)
         {
             button_Run.Focus();
@@ -1967,7 +1467,7 @@ namespace Vinesauce_ROM_Corruptor
                         listView_Files.Focus();
                         if (item.Index >= 4)
                         {
-                            listView_Files.TopItem = listView_Files.Items[item.Index-4];
+                            listView_Files.TopItem = listView_Files.Items[item.Index - 4];
                         }
                         item.Selected = true;
                         break;
@@ -2005,6 +1505,149 @@ namespace Vinesauce_ROM_Corruptor
                 SelectedROM = (RomId)e.Item.Tag;
                 EnforceAutoEnd();
             }
+        }
+
+        private void button_QueueHelp_Click(object sender, EventArgs e)
+        {
+            button_Run.Focus();
+            MessageBox.Show("Checking this box enables queue mode, which allows for multiple corruptions to be executed on the file sequentially. This allows corruption of multiple byte ranges among other things. "
+            + "When the \"Add\" button is clicked, the current corruption settings will be saved to the queue and you will be asked for an identifier for these settings. "
+            + "When the \"Manage\" button is clicked a new window will appear which will allow you to move corruption settings up and down in the queue, remove corruption settings from the queue, "
+            + "or overwrite the current settings with a set of queued settings. The corruption settings at the top of the queue list will be executed first, and the current corruption settings will be executed last. "
+            + "For example, one item in the queue means the ROM is corrupted twice, first using the queued settings and then using the current settings."
+            , "Queue Help");
+        }
+
+        private void button_QueueAdd_Click(object sender, EventArgs e)
+        {
+            // Get an identifier of the corruption settings from the user.
+            string name = Interaction.InputBox("Please enter a brief description of these corruption settings below.", "Add to Queue", "");
+            if (name == "")
+            {
+                MessageBox.Show("No description entered, addition to queue aborted.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            QueueForm.CorruptionQueue.Add(new string[] { name, CorruptionSettingsToString() });
+        }
+
+        private void checkBox_QueueEnable_CheckedChanged(object sender, EventArgs e)
+        {
+            button_QueueAdd.Enabled = checkBox_QueueEnable.Checked;
+            button_QueueManage.Enabled = checkBox_QueueEnable.Checked;
+        }
+
+        private void button_QueueManage_Click(object sender, EventArgs e)
+        {
+            QueueForm form = new QueueForm(this);
+            form.StartPosition = FormStartPosition.CenterParent;
+            form.ShowDialog();
+            while (form.Visible == true)
+                this.Enabled = false;
+        }
+
+        private byte[] Corrupt(byte[] ROM)
+        {
+            // Read in all of the text boxes.
+            long StartByte;
+            try
+            {
+                StartByte = Convert.ToInt64(textBox_StartByte.Text, 16);
+            }
+            catch
+            {
+                MessageBox.Show("Invalid start byte.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return null;
+            }
+
+            long EndByte;
+            try
+            {
+                EndByte = Convert.ToInt64(textBox_EndByte.Text, 16);
+            }
+            catch
+            {
+                MessageBox.Show("Invalid end byte.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return null;
+            }
+
+            uint EveryNthByte;
+            try
+            {
+                EveryNthByte = Convert.ToUInt32(textBox_EveryNBytes.Text);
+            }
+            catch
+            {
+                MessageBox.Show("Invalid byte corruption interval.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return null;
+            }
+            if (EveryNthByte == 0)
+            {
+                MessageBox.Show("Invalid byte corruption interval.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return null;
+            }
+
+            int AddXtoByte;
+            try
+            {
+                AddXtoByte = Convert.ToInt32(textBox_AddXToByte.Text);
+            }
+            catch
+            {
+                MessageBox.Show("Invalid byte addition value.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return null;
+            }
+
+            int ShiftRightXBytes;
+            try
+            {
+                ShiftRightXBytes = Convert.ToInt32(textBox_ShiftRightXBytes.Text);
+            }
+            catch
+            {
+                MessageBox.Show("Invalid right shift value.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return null;
+            }
+
+            byte ReplaceByteXwithYByteX;
+            try
+            {
+                ReplaceByteXwithYByteX = Convert.ToByte(textBox_ReplaceByteXwithYByteX.Text, 16);
+            }
+            catch
+            {
+                MessageBox.Show("Invalid byte to match.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return null;
+            }
+
+            byte ReplaceByteXwithYByteY;
+            try
+            {
+                ReplaceByteXwithYByteY = Convert.ToByte(textBox_ReplaceByteXwithYByteY.Text, 16);
+            }
+            catch
+            {
+                MessageBox.Show("Invalid byte replacement.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return null;
+            }
+
+            // Limit the end byte.
+            if (EndByte > (ROM.LongLength - 1))
+            {
+                EndByte = ROM.LongLength - 1;
+            }
+
+            // Set byte corruption option.
+            Corruption.ByteCorruptionOptions ByteCorruptionOption = Corruption.ByteCorruptionOptions.AddXToByte;
+            if (radioButton_ShiftRightXBytes.Checked) ByteCorruptionOption = Corruption.ByteCorruptionOptions.ShiftRightXBytes;
+            else if (radioButton_ReplaceByteXwithY.Checked) ByteCorruptionOption = Corruption.ByteCorruptionOptions.ReplaceByteXwithY;
+
+            // Corrupt.
+            ROM = Corruption.Run(ROM, checkBox_ByteCorruptionEnable.Checked, StartByte, EndByte, ByteCorruptionOption,
+                EveryNthByte, AddXtoByte, ShiftRightXBytes, ReplaceByteXwithYByteX, ReplaceByteXwithYByteY, checkBox_EnableNESCPUJamProtection.Checked,
+                checkBox_TextReplacementEnable.Checked, checkBox_TextUseByteCorruptionRange.Checked, textBox_TextToReplace.Text, textBox_ReplaceWith.Text, textBox_AnchorWords.Text,
+                checkBox_ColorReplacementEnable.Checked, checkBox_ColorUseByteCorruptionRange.Checked, textBox_ColorsToReplace.Text, textBox_ReplaceWithColors.Text);
+
+            return ROM;
         }
     }
 }

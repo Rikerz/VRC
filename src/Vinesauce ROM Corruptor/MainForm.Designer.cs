@@ -136,6 +136,11 @@ namespace Vinesauce_ROM_Corruptor
             this.checkBox_HotkeyEnable = new System.Windows.Forms.CheckBox();
             this.button_HotkeySet = new System.Windows.Forms.Button();
             this.button_HotkeyHelp = new System.Windows.Forms.Button();
+            this.groupBox_Queue = new System.Windows.Forms.GroupBox();
+            this.button_QueueHelp = new System.Windows.Forms.Button();
+            this.checkBox_QueueEnable = new System.Windows.Forms.CheckBox();
+            this.button_QueueManage = new System.Windows.Forms.Button();
+            this.button_QueueAdd = new System.Windows.Forms.Button();
             this.groupBox_FileSelection.SuspendLayout();
             this.groupBox_EmulatorSelection.SuspendLayout();
             this.groupBox_TextReplace.SuspendLayout();
@@ -144,6 +149,7 @@ namespace Vinesauce_ROM_Corruptor
             this.groupBox_NESPalette.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_NESPalette)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.groupBox_Queue.SuspendLayout();
             this.SuspendLayout();
             // 
             // button_RomDirectoryBrowse
@@ -247,7 +253,7 @@ namespace Vinesauce_ROM_Corruptor
             this.listView_Files.Margin = new System.Windows.Forms.Padding(2);
             this.listView_Files.MultiSelect = false;
             this.listView_Files.Name = "listView_Files";
-            this.listView_Files.Size = new System.Drawing.Size(344, 188);
+            this.listView_Files.Size = new System.Drawing.Size(344, 183);
             this.listView_Files.TabIndex = 47;
             this.listView_Files.UseCompatibleStateImageBehavior = false;
             this.listView_Files.View = System.Windows.Forms.View.Details;
@@ -256,7 +262,7 @@ namespace Vinesauce_ROM_Corruptor
             // listViewC_fileName
             // 
             this.listViewC_fileName.Text = "File Name";
-            this.listViewC_fileName.Width = 344;
+            this.listViewC_fileName.Width = 340;
             // 
             // groupBox_EmulatorSelection
             // 
@@ -928,9 +934,9 @@ namespace Vinesauce_ROM_Corruptor
             this.groupBox_ColorReplacement.Controls.Add(this.label_ColorsToReplace);
             this.groupBox_ColorReplacement.Controls.Add(this.checkBox_ColorReplacementEnable);
             this.groupBox_ColorReplacement.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox_ColorReplacement.Location = new System.Drawing.Point(10, 583);
+            this.groupBox_ColorReplacement.Location = new System.Drawing.Point(10, 580);
             this.groupBox_ColorReplacement.Name = "groupBox_ColorReplacement";
-            this.groupBox_ColorReplacement.Size = new System.Drawing.Size(359, 169);
+            this.groupBox_ColorReplacement.Size = new System.Drawing.Size(359, 172);
             this.groupBox_ColorReplacement.TabIndex = 16;
             this.groupBox_ColorReplacement.TabStop = false;
             this.groupBox_ColorReplacement.Text = "Color Replacement";
@@ -1091,7 +1097,7 @@ namespace Vinesauce_ROM_Corruptor
             this.pictureBox1.Image = global::Vinesauce_ROM_Corruptor.Properties.Resources.Vinesauce_Mushroom;
             this.pictureBox1.Location = new System.Drawing.Point(376, 11);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(358, 307);
+            this.pictureBox1.Size = new System.Drawing.Size(358, 233);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.pictureBox1.TabIndex = 39;
             this.pictureBox1.TabStop = false;
@@ -1153,12 +1159,71 @@ namespace Vinesauce_ROM_Corruptor
             this.button_HotkeyHelp.UseVisualStyleBackColor = true;
             this.button_HotkeyHelp.Click += new System.EventHandler(this.button_HotkeyHelp_Click);
             // 
+            // groupBox_Queue
+            // 
+            this.groupBox_Queue.Controls.Add(this.button_QueueHelp);
+            this.groupBox_Queue.Controls.Add(this.checkBox_QueueEnable);
+            this.groupBox_Queue.Controls.Add(this.button_QueueManage);
+            this.groupBox_Queue.Controls.Add(this.button_QueueAdd);
+            this.groupBox_Queue.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox_Queue.Location = new System.Drawing.Point(376, 250);
+            this.groupBox_Queue.Name = "groupBox_Queue";
+            this.groupBox_Queue.Size = new System.Drawing.Size(358, 68);
+            this.groupBox_Queue.TabIndex = 46;
+            this.groupBox_Queue.TabStop = false;
+            this.groupBox_Queue.Text = "Queue";
+            // 
+            // button_QueueHelp
+            // 
+            this.button_QueueHelp.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button_QueueHelp.Location = new System.Drawing.Point(236, 16);
+            this.button_QueueHelp.Name = "button_QueueHelp";
+            this.button_QueueHelp.Size = new System.Drawing.Size(26, 23);
+            this.button_QueueHelp.TabIndex = 45;
+            this.button_QueueHelp.Text = "?";
+            this.button_QueueHelp.UseVisualStyleBackColor = true;
+            this.button_QueueHelp.Click += new System.EventHandler(this.button_QueueHelp_Click);
+            // 
+            // checkBox_QueueEnable
+            // 
+            this.checkBox_QueueEnable.AutoSize = true;
+            this.checkBox_QueueEnable.Location = new System.Drawing.Point(6, 20);
+            this.checkBox_QueueEnable.Name = "checkBox_QueueEnable";
+            this.checkBox_QueueEnable.Size = new System.Drawing.Size(65, 17);
+            this.checkBox_QueueEnable.TabIndex = 2;
+            this.checkBox_QueueEnable.Text = "Enable";
+            this.checkBox_QueueEnable.UseVisualStyleBackColor = true;
+            this.checkBox_QueueEnable.CheckedChanged += new System.EventHandler(this.checkBox_QueueEnable_CheckedChanged);
+            // 
+            // button_QueueManage
+            // 
+            this.button_QueueManage.Enabled = false;
+            this.button_QueueManage.Location = new System.Drawing.Point(155, 16);
+            this.button_QueueManage.Name = "button_QueueManage";
+            this.button_QueueManage.Size = new System.Drawing.Size(75, 23);
+            this.button_QueueManage.TabIndex = 1;
+            this.button_QueueManage.Text = "Manage";
+            this.button_QueueManage.UseVisualStyleBackColor = true;
+            this.button_QueueManage.Click += new System.EventHandler(this.button_QueueManage_Click);
+            // 
+            // button_QueueAdd
+            // 
+            this.button_QueueAdd.Enabled = false;
+            this.button_QueueAdd.Location = new System.Drawing.Point(74, 16);
+            this.button_QueueAdd.Name = "button_QueueAdd";
+            this.button_QueueAdd.Size = new System.Drawing.Size(75, 23);
+            this.button_QueueAdd.TabIndex = 0;
+            this.button_QueueAdd.Text = "Add";
+            this.button_QueueAdd.UseVisualStyleBackColor = true;
+            this.button_QueueAdd.Click += new System.EventHandler(this.button_QueueAdd_Click);
+            // 
             // MainForm
             // 
             this.AcceptButton = this.button_Run;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(742, 791);
+            this.Controls.Add(this.groupBox_Queue);
             this.Controls.Add(this.button_HotkeyHelp);
             this.Controls.Add(this.button_HotkeySet);
             this.Controls.Add(this.checkBox_HotkeyEnable);
@@ -1193,6 +1258,8 @@ namespace Vinesauce_ROM_Corruptor
             this.groupBox_NESPalette.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_NESPalette)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.groupBox_Queue.ResumeLayout(false);
+            this.groupBox_Queue.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1287,6 +1354,11 @@ namespace Vinesauce_ROM_Corruptor
         private System.Windows.Forms.Button button_HotkeyHelp;
         private System.Windows.Forms.ListView listView_Files;
         private System.Windows.Forms.ColumnHeader listViewC_fileName;
+        private System.Windows.Forms.GroupBox groupBox_Queue;
+        private System.Windows.Forms.Button button_QueueHelp;
+        private System.Windows.Forms.CheckBox checkBox_QueueEnable;
+        private System.Windows.Forms.Button button_QueueManage;
+        private System.Windows.Forms.Button button_QueueAdd;
     }
 }
 
