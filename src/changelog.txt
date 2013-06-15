@@ -1,3 +1,17 @@
+Version 1.2.1
+
+- Added "Add from File" to queue feature.
+
+- The queue feature window is now not resizeable.
+
+Version 1.2.0
+
+- Queue feature
+	This feature allows several corruptions to be
+	performed in sequence on the same file. This allows
+	the corruption of multiple byte ranges, among other
+	things.
+
 Version 1.1.0
 
 - Hash-based saving
