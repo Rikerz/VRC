@@ -275,12 +275,12 @@ namespace Vinesauce_ROM_Corruptor
                     {
                         MessageBox.Show("Previous error encountered corrupting using \"" + Entry[0] + "\" corruption settings in queue.",
                             "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        StringToCorruptionSettings(Enumerable.Last(QueueForm.CorruptionQueue)[1]);
+                        StringToCorruptionSettings(QueueForm.CorruptionQueue[QueueForm.CorruptionQueue.Count - 1][1]);
                         QueueForm.CorruptionQueue.RemoveAt(QueueForm.CorruptionQueue.Count - 1);
                         return;
                     }
                 }
-                StringToCorruptionSettings(Enumerable.Last(QueueForm.CorruptionQueue)[1]);
+                StringToCorruptionSettings(QueueForm.CorruptionQueue[QueueForm.CorruptionQueue.Count - 1][1]);
                 QueueForm.CorruptionQueue.RemoveAt(QueueForm.CorruptionQueue.Count - 1);
             }
             else
@@ -914,7 +914,8 @@ namespace Vinesauce_ROM_Corruptor
                     // Load the settings.
                     StringToFileSettings(text);
                     StringToCorruptionSettings(text);
-                    StringToQueueSettings(text);
+                    QueueForm.CorruptionQueue.Clear();
+                    StringToQueueSettings(text, "");
                     EnforceAutoEnd();
                 }
                 catch
@@ -940,7 +941,8 @@ namespace Vinesauce_ROM_Corruptor
                         string text = File.ReadAllText(fDialog.FileName);
                         StringToFileSettings(text);
                         StringToCorruptionSettings(text);
-                        StringToQueueSettings(text);
+                        QueueForm.CorruptionQueue.Clear();
+                        StringToQueueSettings(text, "");
                         EnforceAutoEnd();
                     }
                     catch
@@ -1322,7 +1324,7 @@ namespace Vinesauce_ROM_Corruptor
             }
         }
 
-        public void StringToQueueSettings(string text)
+        public void StringToQueueSettings(string text, string filename)
         {
             Match m = Regex.Match(text, "(?<=checkBox_QueueEnable\\.Checked=).*?(?=\r)");
             if (m.Success)
@@ -1337,7 +1339,6 @@ namespace Vinesauce_ROM_Corruptor
                 }
             }
 
-            QueueForm.CorruptionQueue.Clear();
             MatchCollection entries = Regex.Matches(text, "(?<=Queue_Entry_Start\r\n).*?(?=Queue_Entry_End\r\n)", RegexOptions.Singleline);
             foreach (Match entry in entries)
             {
@@ -1349,7 +1350,15 @@ namespace Vinesauce_ROM_Corruptor
                     {
                         id = m.Groups[0].Value;
                     }
-                    QueueForm.CorruptionQueue.Add(new string[] { id, entry.Groups[0].Value });
+
+                    if (filename == "")
+                    {
+                        QueueForm.CorruptionQueue.Add(new string[] { id, entry.Groups[0].Value });
+                    }
+                    else
+                    {
+                        QueueForm.CorruptionQueue.Add(new string[] { filename + ":" + id, entry.Groups[0].Value });
+                    }
                 }
             }
         }
@@ -1512,6 +1521,7 @@ namespace Vinesauce_ROM_Corruptor
             button_Run.Focus();
             MessageBox.Show("Checking this box enables queue mode, which allows for multiple corruptions to be executed on the file sequentially. This allows corruption of multiple byte ranges among other things. "
             + "When the \"Add\" button is clicked, the current corruption settings will be saved to the queue and you will be asked for an identifier for these settings. "
+            + "When the \"Add from File\" button is clicked, you will be asked to select a file containing corruption settings. All sets of corruption settings in this file will be added to the queue. "
             + "When the \"Manage\" button is clicked a new window will appear which will allow you to move corruption settings up and down in the queue, remove corruption settings from the queue, "
             + "or overwrite the current settings with a set of queued settings. The corruption settings at the top of the queue list will be executed first, and the current corruption settings will be executed last. "
             + "For example, one item in the queue means the ROM is corrupted twice, first using the queued settings and then using the current settings."
@@ -1533,6 +1543,7 @@ namespace Vinesauce_ROM_Corruptor
         private void checkBox_QueueEnable_CheckedChanged(object sender, EventArgs e)
         {
             button_QueueAdd.Enabled = checkBox_QueueEnable.Checked;
+            button_QueueAddFromFile.Enabled = checkBox_QueueEnable.Checked;
             button_QueueManage.Enabled = checkBox_QueueEnable.Checked;
         }
 
@@ -1648,6 +1659,60 @@ namespace Vinesauce_ROM_Corruptor
                 checkBox_ColorReplacementEnable.Checked, checkBox_ColorUseByteCorruptionRange.Checked, textBox_ColorsToReplace.Text, textBox_ReplaceWithColors.Text);
 
             return ROM;
+        }
+
+        private void button_QueueAddFromFile_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog fDialog = new OpenFileDialog();
+            fDialog.Title = "Select Corruption Settings to Add to Queue";
+            fDialog.Filter = "Text Documents (*.txt)|*.txt";
+            fDialog.CheckFileExists = true;
+            fDialog.CheckPathExists = true;
+            fDialog.InitialDirectory = SettingSaveDirectory;
+
+            if (fDialog.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    // Load the text from the file.
+                    string text = File.ReadAllText(fDialog.FileName);
+
+                    // Get the file name.
+                    string filename = Path.GetFileNameWithoutExtension(fDialog.FileName);
+
+                    // Read in the queue entries.
+                    StringToQueueSettings(text, filename);
+
+                    // Save the current settings to the queue.
+                    QueueForm.CorruptionQueue.Add(new string[] { "Current", CorruptionSettingsToString() });
+
+                    // Read in the main settings.
+                    StringToCorruptionSettings(text);
+
+                    // Save the main settings to the queue.
+                    QueueForm.CorruptionQueue.Add(new string[] { filename, CorruptionSettingsToString() });
+                    
+                    // Restore the current settings.
+                    StringToCorruptionSettings(QueueForm.CorruptionQueue[QueueForm.CorruptionQueue.Count - 2][1]);
+
+                    // Remove the current settings from the queue.
+                    QueueForm.CorruptionQueue.RemoveAt(QueueForm.CorruptionQueue.Count - 2);
+                }
+                catch
+                {
+                    MessageBox.Show("Error loading corruption settings.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                try
+                {
+                    SettingSaveDirectory = Path.GetDirectoryName(fDialog.FileName);
+                }
+                catch
+                {
+                    SettingSaveDirectory = "";
+                }
+            }
         }
     }
 }

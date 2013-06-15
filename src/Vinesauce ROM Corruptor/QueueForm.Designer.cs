@@ -146,6 +146,7 @@ namespace Vinesauce_ROM_Corruptor
             this.Controls.Add(this.button_Down);
             this.Controls.Add(this.button_Up);
             this.Controls.Add(this.listView_Queue);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "QueueForm";
             this.Text = "Manage Queue";

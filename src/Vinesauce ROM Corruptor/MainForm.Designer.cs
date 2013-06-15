@@ -141,6 +141,7 @@ namespace Vinesauce_ROM_Corruptor
             this.checkBox_QueueEnable = new System.Windows.Forms.CheckBox();
             this.button_QueueManage = new System.Windows.Forms.Button();
             this.button_QueueAdd = new System.Windows.Forms.Button();
+            this.button_QueueAddFromFile = new System.Windows.Forms.Button();
             this.groupBox_FileSelection.SuspendLayout();
             this.groupBox_EmulatorSelection.SuspendLayout();
             this.groupBox_TextReplace.SuspendLayout();
@@ -1161,6 +1162,7 @@ namespace Vinesauce_ROM_Corruptor
             // 
             // groupBox_Queue
             // 
+            this.groupBox_Queue.Controls.Add(this.button_QueueAddFromFile);
             this.groupBox_Queue.Controls.Add(this.button_QueueHelp);
             this.groupBox_Queue.Controls.Add(this.checkBox_QueueEnable);
             this.groupBox_Queue.Controls.Add(this.button_QueueManage);
@@ -1176,7 +1178,7 @@ namespace Vinesauce_ROM_Corruptor
             // button_QueueHelp
             // 
             this.button_QueueHelp.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_QueueHelp.Location = new System.Drawing.Point(236, 16);
+            this.button_QueueHelp.Location = new System.Drawing.Point(293, 16);
             this.button_QueueHelp.Name = "button_QueueHelp";
             this.button_QueueHelp.Size = new System.Drawing.Size(26, 23);
             this.button_QueueHelp.TabIndex = 45;
@@ -1198,7 +1200,7 @@ namespace Vinesauce_ROM_Corruptor
             // button_QueueManage
             // 
             this.button_QueueManage.Enabled = false;
-            this.button_QueueManage.Location = new System.Drawing.Point(155, 16);
+            this.button_QueueManage.Location = new System.Drawing.Point(212, 16);
             this.button_QueueManage.Name = "button_QueueManage";
             this.button_QueueManage.Size = new System.Drawing.Size(75, 23);
             this.button_QueueManage.TabIndex = 1;
@@ -1211,11 +1213,22 @@ namespace Vinesauce_ROM_Corruptor
             this.button_QueueAdd.Enabled = false;
             this.button_QueueAdd.Location = new System.Drawing.Point(74, 16);
             this.button_QueueAdd.Name = "button_QueueAdd";
-            this.button_QueueAdd.Size = new System.Drawing.Size(75, 23);
+            this.button_QueueAdd.Size = new System.Drawing.Size(37, 23);
             this.button_QueueAdd.TabIndex = 0;
             this.button_QueueAdd.Text = "Add";
             this.button_QueueAdd.UseVisualStyleBackColor = true;
             this.button_QueueAdd.Click += new System.EventHandler(this.button_QueueAdd_Click);
+            // 
+            // button_QueueAddFromFile
+            // 
+            this.button_QueueAddFromFile.Enabled = false;
+            this.button_QueueAddFromFile.Location = new System.Drawing.Point(117, 16);
+            this.button_QueueAddFromFile.Name = "button_QueueAddFromFile";
+            this.button_QueueAddFromFile.Size = new System.Drawing.Size(89, 23);
+            this.button_QueueAddFromFile.TabIndex = 46;
+            this.button_QueueAddFromFile.Text = "Add from File";
+            this.button_QueueAddFromFile.UseVisualStyleBackColor = true;
+            this.button_QueueAddFromFile.Click += new System.EventHandler(this.button_QueueAddFromFile_Click);
             // 
             // MainForm
             // 
@@ -1359,6 +1372,7 @@ namespace Vinesauce_ROM_Corruptor
         private System.Windows.Forms.CheckBox checkBox_QueueEnable;
         private System.Windows.Forms.Button button_QueueManage;
         private System.Windows.Forms.Button button_QueueAdd;
+        private System.Windows.Forms.Button button_QueueAddFromFile;
     }
 }
 
