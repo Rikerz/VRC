@@ -219,6 +219,61 @@
         nuu6vuu83uu+/utBFhAAOw==
 </value>
   </data>
+  <data name="richTextBox1.Text" xml:space="preserve">
+    <value>Version 1.2.2
+
+The Vinesauce ROM Corruptor is a program that allows you to change the bytes of any file by tweaking some simple settings.
+
+Its main use is corrupting NES ROM files for that glitchy, fun effect, but since it works on any file it can be used to corrupt any kind of ROM or game data file.
+
+-CHANGES-
+
+Version 1.2.2
+
+- UI Cleaned up for smaller screens.
+	The Queue controls, Run/Save/Load button, and related
+	functions remain accessible from every tab.
+
+- Changelog integrated into the about screen.
+	(Hello, reader!)
+
+
+Version 1.2.1
+
+- Added "Add from File" to queue feature.
+
+- The queue feature window is now not resizeable.
+
+
+Version 1.2.0
+
+- Queue feature
+	This feature allows several corruptions to be
+	performed in sequence on the same file. This allows
+	the corruption of multiple byte ranges, among other
+	things.
+
+
+Version 1.1.0
+
+- Hash-based saving
+	This feature ensures that you have the exact same file 
+	when you load corruption settings from others. 
+	If you do not have the exact same file, a file of the
+	same name will be selected if it exists. In this 
+	case, you will be warned that it may not be the 
+	intended corruption target.
+
+- File and directory selection dialogs now start in their
+  current or previous directory
+
+- Paths now handle spaces properly
+	
+
+Version 1.0.0
+
+- Initial release on Github</value>
+  </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         AAABAAQAEBAAAAAAIABoBAAARgAAACAgAAAAACAAqBAAAK4EAAAwMAAAAAAgAKglAABWFQAAQEAAAAAA
