@@ -1,4 +1,4 @@
-VRC
+![VRC](http://raw.githubusercontent.com/Rikerz/VRC/master/resources/vrc.png)]
 ===
 [Download Latest Release](http://github.com/Rikerz/VRC/raw/master/bin/Vinesauce%20ROM%20Corruptor%20v1.1.0.zip)
 
