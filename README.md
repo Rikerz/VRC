@@ -10,7 +10,7 @@ It's main use is corrupting NES ROM files for that glitchy fun effect, but since
 [![donate](http://rikerz.github.io/VRC/images/donate.png)](https://www.twitchalerts.com/donate/rikerz)
 ===
 
-Click the "DONATE" button above to support the developer and contribute to things like:
+Click the "DONATE" heading above to support the developer and contribute to things like:
 
 * Support for additional operating systems (Mac OS X, Android, Linux, etc.)
 * Interface improvements
