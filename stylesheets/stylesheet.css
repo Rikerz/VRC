@@ -202,11 +202,12 @@ hr {
   font-size: 13px;
   text-decoration: none;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.75);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  box-shadow: 0 0 8px 3px rgba(104, 182, 255, 0.75);
 }
 
 .btn:hover {
   background: -webkit-linear-gradient(top, rgba(40, 40, 40, 0.6), rgba(35, 35, 35, 0.6) 50%, rgba(10, 10, 10, 0.8) 50%, rgba(0, 0, 0, 0.8));
+  box-shadow: 0 0 8px 5px rgba(104, 182, 255, 0.75);
 }
 
 .btn .icon {
