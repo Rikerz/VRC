@@ -7,10 +7,10 @@
 The Vinesauce ROM Corruptor is a program that allows you to change the bytes of any file by tweaking some simple settings.
 It's main use is corrupting NES ROM files for that glitchy fun effect, but since it works on any file it can be used to corrupt any kind of ROM or game data file.
 
-[![donate](http://rikerz.github.io/VRC/images/donate.png)](https://www.twitchalerts.com/donate/rikerz)
+[![donate](http://rikerz.github.io/VRC/images/donations.png)](https://www.twitchalerts.com/donate/rikerz)
 ===
 
-Click the "DONATE" heading above to support the developer and contribute to things like:
+Click the [here](https://www.twitchalerts.com/donate/rikerz) to support the developer and contribute to things like:
 
 * Support for additional operating systems (Mac OS X, Android, Linux, etc.)
 * Interface improvements
