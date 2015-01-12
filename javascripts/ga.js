@@ -6,4 +6,8 @@
 })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
 
 ga('create', 'UA-58359114-1', 'auto');
-ga('send', 'pageview');
+ga('send', 'pageview', {
+    'hitCallback': function () {
+        window.location = "http://www.corruptedbytes.com";
+    }
+});
