@@ -8,6 +8,6 @@
 ga('create', 'UA-58359114-1', 'auto');
 ga('send', 'pageview', {
     'hitCallback': function () {
-        window.location = "http://www.corruptedbytes.com";
+        window.location = "http://corruptedbytes.com/2015/01/13/the-vinesauce-rom-corruptor/";
     }
 });
