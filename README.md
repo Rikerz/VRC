@@ -1,21 +1,14 @@
-![VRC](http://rikerz.github.io/VRC/images/vrc.png)
-===
+The Vinesauce ROM Corruptor is a program that allows you to change the bytes of any file by tweaking some simple settings.
+It's development thus far has been biased toward corrupting NES ROM files for that glitchy fun effect, but since it works on any file it can be used to corrupt any kind of ROM or game data file.
+
+I have developed it thus far, and plan to continue developing it.
+You can follow along at home in the [Development](http://corruptedbytes.com/category/development/) category!
+
+This software was inspired by [Vinny's](http://www.twitch.tv/vinesauce) corruption streams on [Vinesauce](http://vinesauce.com/).
+More recently, work on the project has been inspired by [PewDiePie's](http://www.youtube.com/user/PewDiePie) use of the program to make this terrifying and hilarious [video](http://www.youtube.com/watch?v=n648c_beeRI).
+
 [Download Latest Release](http://github.com/Rikerz/VRC/raw/master/bin/Vinesauce%20ROM%20Corruptor%20v1.1.0.zip)
 
 [Download Latest Beta](http://github.com/Rikerz/VRC/raw/master/bin/Vinesauce%20ROM%20Corruptor%20v1.2.1%20\(Beta\).zip)
 
-The Vinesauce ROM Corruptor is a program that allows you to change the bytes of any file by tweaking some simple settings.
-It's main use is corrupting NES ROM files for that glitchy fun effect, but since it works on any file it can be used to corrupt any kind of ROM or game data file.
-
-[![donate](http://rikerz.github.io/VRC/images/donations.png)](https://www.twitchalerts.com/donate/rikerz)
-===
-
-Click the [here](https://www.twitchalerts.com/donate/rikerz) to support the developer and contribute to things like:
-
-* Support for additional operating systems (Mac OS X, Android, Linux, etc.)
-* Interface improvements
-* New features
-* Bug fixes
-
-The donation feature is powered by [TwitchAlerts](http://www.twitchalerts.com).
-Please note that you do not require a [Twitch](http://www.twitch.tv) account to donate: anything may be entered as the username. 
+[My Website](http://corruptedbytes.com)
