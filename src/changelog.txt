@@ -1,8 +1,18 @@
+Version 1.2.2
+
+- UI Cleaned up for smaller screens.
+	The Queue controls, Run/Save/Load button, and related
+	functions remain accessible from every tab.
+
+- Changelog integrated into the about screen.
+
+	
 Version 1.2.1
 
 - Added "Add from File" to queue feature.
 
 - The queue feature window is now not resizeable.
+
 
 Version 1.2.0
 
@@ -12,6 +22,7 @@ Version 1.2.0
 	the corruption of multiple byte ranges, among other
 	things.
 
+	
 Version 1.1.0
 
 - Hash-based saving

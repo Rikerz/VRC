@@ -137,11 +137,18 @@ namespace Vinesauce_ROM_Corruptor
             this.button_HotkeySet = new System.Windows.Forms.Button();
             this.button_HotkeyHelp = new System.Windows.Forms.Button();
             this.groupBox_Queue = new System.Windows.Forms.GroupBox();
+            this.button_QueueAddFromFile = new System.Windows.Forms.Button();
             this.button_QueueHelp = new System.Windows.Forms.Button();
             this.checkBox_QueueEnable = new System.Windows.Forms.CheckBox();
             this.button_QueueManage = new System.Windows.Forms.Button();
             this.button_QueueAdd = new System.Windows.Forms.Button();
-            this.button_QueueAddFromFile = new System.Windows.Forms.Button();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.groupBox_FileSelection.SuspendLayout();
             this.groupBox_EmulatorSelection.SuspendLayout();
             this.groupBox_TextReplace.SuspendLayout();
@@ -151,6 +158,12 @@ namespace Vinesauce_ROM_Corruptor
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_NESPalette)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBox_Queue.SuspendLayout();
+            this.tabControl1.SuspendLayout();
+            this.tabPage1.SuspendLayout();
+            this.tabPage2.SuspendLayout();
+            this.tabPage3.SuspendLayout();
+            this.tabPage4.SuspendLayout();
+            this.tabPage5.SuspendLayout();
             this.SuspendLayout();
             // 
             // button_RomDirectoryBrowse
@@ -205,7 +218,7 @@ namespace Vinesauce_ROM_Corruptor
             // button_SaveLocationBrowse
             // 
             this.button_SaveLocationBrowse.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_SaveLocationBrowse.Location = new System.Drawing.Point(326, 261);
+            this.button_SaveLocationBrowse.Location = new System.Drawing.Point(326, 259);
             this.button_SaveLocationBrowse.Name = "button_SaveLocationBrowse";
             this.button_SaveLocationBrowse.Size = new System.Drawing.Size(26, 23);
             this.button_SaveLocationBrowse.TabIndex = 5;
@@ -236,9 +249,9 @@ namespace Vinesauce_ROM_Corruptor
             this.groupBox_FileSelection.Controls.Add(this.textBox_RomDirectory);
             this.groupBox_FileSelection.Controls.Add(this.labelSaveLocation);
             this.groupBox_FileSelection.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox_FileSelection.Location = new System.Drawing.Point(10, 5);
+            this.groupBox_FileSelection.Location = new System.Drawing.Point(6, 6);
             this.groupBox_FileSelection.Name = "groupBox_FileSelection";
-            this.groupBox_FileSelection.Size = new System.Drawing.Size(359, 313);
+            this.groupBox_FileSelection.Size = new System.Drawing.Size(360, 316);
             this.groupBox_FileSelection.TabIndex = 7;
             this.groupBox_FileSelection.TabStop = false;
             this.groupBox_FileSelection.Text = "File Selection";
@@ -272,9 +285,9 @@ namespace Vinesauce_ROM_Corruptor
             this.groupBox_EmulatorSelection.Controls.Add(this.label_EmulatorToRun);
             this.groupBox_EmulatorSelection.Controls.Add(this.checkBox_RunEmulator);
             this.groupBox_EmulatorSelection.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox_EmulatorSelection.Location = new System.Drawing.Point(10, 323);
+            this.groupBox_EmulatorSelection.Location = new System.Drawing.Point(6, 328);
             this.groupBox_EmulatorSelection.Name = "groupBox_EmulatorSelection";
-            this.groupBox_EmulatorSelection.Size = new System.Drawing.Size(358, 83);
+            this.groupBox_EmulatorSelection.Size = new System.Drawing.Size(357, 83);
             this.groupBox_EmulatorSelection.TabIndex = 8;
             this.groupBox_EmulatorSelection.TabStop = false;
             this.groupBox_EmulatorSelection.Text = "Emulator Selection";
@@ -335,9 +348,9 @@ namespace Vinesauce_ROM_Corruptor
             this.groupBox_TextReplace.Controls.Add(this.label_AnchorWords);
             this.groupBox_TextReplace.Controls.Add(this.checkBox_TextReplacementEnable);
             this.groupBox_TextReplace.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox_TextReplace.Location = new System.Drawing.Point(10, 413);
+            this.groupBox_TextReplace.Location = new System.Drawing.Point(6, 6);
             this.groupBox_TextReplace.Name = "groupBox_TextReplace";
-            this.groupBox_TextReplace.Size = new System.Drawing.Size(359, 162);
+            this.groupBox_TextReplace.Size = new System.Drawing.Size(360, 405);
             this.groupBox_TextReplace.TabIndex = 9;
             this.groupBox_TextReplace.TabStop = false;
             this.groupBox_TextReplace.Text = "Text Replacement";
@@ -345,7 +358,7 @@ namespace Vinesauce_ROM_Corruptor
             // button_TextUseByteCorruptionRangeHelp
             // 
             this.button_TextUseByteCorruptionRangeHelp.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_TextUseByteCorruptionRangeHelp.Location = new System.Drawing.Point(327, 15);
+            this.button_TextUseByteCorruptionRangeHelp.Location = new System.Drawing.Point(328, 15);
             this.button_TextUseByteCorruptionRangeHelp.Name = "button_TextUseByteCorruptionRangeHelp";
             this.button_TextUseByteCorruptionRangeHelp.Size = new System.Drawing.Size(26, 23);
             this.button_TextUseByteCorruptionRangeHelp.TabIndex = 17;
@@ -357,7 +370,7 @@ namespace Vinesauce_ROM_Corruptor
             // 
             this.checkBox_TextUseByteCorruptionRange.AutoSize = true;
             this.checkBox_TextUseByteCorruptionRange.Enabled = false;
-            this.checkBox_TextUseByteCorruptionRange.Location = new System.Drawing.Point(141, 19);
+            this.checkBox_TextUseByteCorruptionRange.Location = new System.Drawing.Point(142, 19);
             this.checkBox_TextUseByteCorruptionRange.Name = "checkBox_TextUseByteCorruptionRange";
             this.checkBox_TextUseByteCorruptionRange.Size = new System.Drawing.Size(180, 17);
             this.checkBox_TextUseByteCorruptionRange.TabIndex = 16;
@@ -367,7 +380,7 @@ namespace Vinesauce_ROM_Corruptor
             // button_ReplaceWithHelp
             // 
             this.button_ReplaceWithHelp.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_ReplaceWithHelp.Location = new System.Drawing.Point(327, 132);
+            this.button_ReplaceWithHelp.Location = new System.Drawing.Point(328, 132);
             this.button_ReplaceWithHelp.Name = "button_ReplaceWithHelp";
             this.button_ReplaceWithHelp.Size = new System.Drawing.Size(26, 23);
             this.button_ReplaceWithHelp.TabIndex = 15;
@@ -378,7 +391,7 @@ namespace Vinesauce_ROM_Corruptor
             // button_TextToReplaceHelp
             // 
             this.button_TextToReplaceHelp.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_TextToReplaceHelp.Location = new System.Drawing.Point(327, 93);
+            this.button_TextToReplaceHelp.Location = new System.Drawing.Point(328, 93);
             this.button_TextToReplaceHelp.Name = "button_TextToReplaceHelp";
             this.button_TextToReplaceHelp.Size = new System.Drawing.Size(26, 23);
             this.button_TextToReplaceHelp.TabIndex = 14;
@@ -392,7 +405,7 @@ namespace Vinesauce_ROM_Corruptor
             this.textBox_ReplaceWith.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox_ReplaceWith.Location = new System.Drawing.Point(9, 134);
             this.textBox_ReplaceWith.Name = "textBox_ReplaceWith";
-            this.textBox_ReplaceWith.Size = new System.Drawing.Size(312, 20);
+            this.textBox_ReplaceWith.Size = new System.Drawing.Size(313, 20);
             this.textBox_ReplaceWith.TabIndex = 13;
             // 
             // label_ReplaceWith
@@ -411,7 +424,7 @@ namespace Vinesauce_ROM_Corruptor
             this.textBox_TextToReplace.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox_TextToReplace.Location = new System.Drawing.Point(9, 95);
             this.textBox_TextToReplace.Name = "textBox_TextToReplace";
-            this.textBox_TextToReplace.Size = new System.Drawing.Size(312, 20);
+            this.textBox_TextToReplace.Size = new System.Drawing.Size(313, 20);
             this.textBox_TextToReplace.TabIndex = 11;
             // 
             // label_TextToReplace
@@ -427,7 +440,7 @@ namespace Vinesauce_ROM_Corruptor
             // button_AnchorWordsHelp
             // 
             this.button_AnchorWordsHelp.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_AnchorWordsHelp.Location = new System.Drawing.Point(327, 53);
+            this.button_AnchorWordsHelp.Location = new System.Drawing.Point(328, 53);
             this.button_AnchorWordsHelp.Name = "button_AnchorWordsHelp";
             this.button_AnchorWordsHelp.Size = new System.Drawing.Size(26, 23);
             this.button_AnchorWordsHelp.TabIndex = 9;
@@ -441,7 +454,7 @@ namespace Vinesauce_ROM_Corruptor
             this.textBox_AnchorWords.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox_AnchorWords.Location = new System.Drawing.Point(9, 55);
             this.textBox_AnchorWords.Name = "textBox_AnchorWords";
-            this.textBox_AnchorWords.Size = new System.Drawing.Size(312, 20);
+            this.textBox_AnchorWords.Size = new System.Drawing.Size(313, 20);
             this.textBox_AnchorWords.TabIndex = 3;
             this.textBox_AnchorWords.Text = "NINTENDO";
             // 
@@ -469,9 +482,9 @@ namespace Vinesauce_ROM_Corruptor
             // button_Run
             // 
             this.button_Run.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_Run.Location = new System.Drawing.Point(10, 757);
+            this.button_Run.Location = new System.Drawing.Point(4, 503);
             this.button_Run.Name = "button_Run";
-            this.button_Run.Size = new System.Drawing.Size(55, 28);
+            this.button_Run.Size = new System.Drawing.Size(69, 28);
             this.button_Run.TabIndex = 10;
             this.button_Run.Text = "Run";
             this.button_Run.UseVisualStyleBackColor = true;
@@ -516,9 +529,9 @@ namespace Vinesauce_ROM_Corruptor
             this.groupBox_ByteCorruption.Controls.Add(this.label_StartByte);
             this.groupBox_ByteCorruption.Controls.Add(this.checkBox_ByteCorruptionEnable);
             this.groupBox_ByteCorruption.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox_ByteCorruption.Location = new System.Drawing.Point(376, 323);
+            this.groupBox_ByteCorruption.Location = new System.Drawing.Point(6, 6);
             this.groupBox_ByteCorruption.Name = "groupBox_ByteCorruption";
-            this.groupBox_ByteCorruption.Size = new System.Drawing.Size(358, 251);
+            this.groupBox_ByteCorruption.Size = new System.Drawing.Size(360, 405);
             this.groupBox_ByteCorruption.TabIndex = 11;
             this.groupBox_ByteCorruption.TabStop = false;
             this.groupBox_ByteCorruption.Text = "Byte Corruption";
@@ -935,9 +948,9 @@ namespace Vinesauce_ROM_Corruptor
             this.groupBox_ColorReplacement.Controls.Add(this.label_ColorsToReplace);
             this.groupBox_ColorReplacement.Controls.Add(this.checkBox_ColorReplacementEnable);
             this.groupBox_ColorReplacement.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox_ColorReplacement.Location = new System.Drawing.Point(10, 580);
+            this.groupBox_ColorReplacement.Location = new System.Drawing.Point(6, 6);
             this.groupBox_ColorReplacement.Name = "groupBox_ColorReplacement";
-            this.groupBox_ColorReplacement.Size = new System.Drawing.Size(359, 172);
+            this.groupBox_ColorReplacement.Size = new System.Drawing.Size(360, 274);
             this.groupBox_ColorReplacement.TabIndex = 16;
             this.groupBox_ColorReplacement.TabStop = false;
             this.groupBox_ColorReplacement.Text = "Color Replacement";
@@ -945,7 +958,7 @@ namespace Vinesauce_ROM_Corruptor
             // button_ColorUseByteCorruptionRangeHelp
             // 
             this.button_ColorUseByteCorruptionRangeHelp.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_ColorUseByteCorruptionRangeHelp.Location = new System.Drawing.Point(327, 15);
+            this.button_ColorUseByteCorruptionRangeHelp.Location = new System.Drawing.Point(328, 15);
             this.button_ColorUseByteCorruptionRangeHelp.Name = "button_ColorUseByteCorruptionRangeHelp";
             this.button_ColorUseByteCorruptionRangeHelp.Size = new System.Drawing.Size(26, 23);
             this.button_ColorUseByteCorruptionRangeHelp.TabIndex = 19;
@@ -956,7 +969,7 @@ namespace Vinesauce_ROM_Corruptor
             // button_ReplaceWithColorsHelp
             // 
             this.button_ReplaceWithColorsHelp.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_ReplaceWithColorsHelp.Location = new System.Drawing.Point(327, 93);
+            this.button_ReplaceWithColorsHelp.Location = new System.Drawing.Point(328, 93);
             this.button_ReplaceWithColorsHelp.Name = "button_ReplaceWithColorsHelp";
             this.button_ReplaceWithColorsHelp.Size = new System.Drawing.Size(26, 23);
             this.button_ReplaceWithColorsHelp.TabIndex = 14;
@@ -968,7 +981,7 @@ namespace Vinesauce_ROM_Corruptor
             // 
             this.checkBox_ColorUseByteCorruptionRange.AutoSize = true;
             this.checkBox_ColorUseByteCorruptionRange.Enabled = false;
-            this.checkBox_ColorUseByteCorruptionRange.Location = new System.Drawing.Point(141, 19);
+            this.checkBox_ColorUseByteCorruptionRange.Location = new System.Drawing.Point(142, 19);
             this.checkBox_ColorUseByteCorruptionRange.Name = "checkBox_ColorUseByteCorruptionRange";
             this.checkBox_ColorUseByteCorruptionRange.Size = new System.Drawing.Size(180, 17);
             this.checkBox_ColorUseByteCorruptionRange.TabIndex = 18;
@@ -981,7 +994,7 @@ namespace Vinesauce_ROM_Corruptor
             this.textBox_ReplaceWithColors.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox_ReplaceWithColors.Location = new System.Drawing.Point(9, 95);
             this.textBox_ReplaceWithColors.Name = "textBox_ReplaceWithColors";
-            this.textBox_ReplaceWithColors.Size = new System.Drawing.Size(312, 20);
+            this.textBox_ReplaceWithColors.Size = new System.Drawing.Size(313, 20);
             this.textBox_ReplaceWithColors.TabIndex = 11;
             // 
             // label_ReplaceWithColors
@@ -997,7 +1010,7 @@ namespace Vinesauce_ROM_Corruptor
             // button_ColorsToReplaceHelp
             // 
             this.button_ColorsToReplaceHelp.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_ColorsToReplaceHelp.Location = new System.Drawing.Point(327, 53);
+            this.button_ColorsToReplaceHelp.Location = new System.Drawing.Point(328, 53);
             this.button_ColorsToReplaceHelp.Name = "button_ColorsToReplaceHelp";
             this.button_ColorsToReplaceHelp.Size = new System.Drawing.Size(26, 23);
             this.button_ColorsToReplaceHelp.TabIndex = 9;
@@ -1011,7 +1024,7 @@ namespace Vinesauce_ROM_Corruptor
             this.textBox_ColorsToReplace.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox_ColorsToReplace.Location = new System.Drawing.Point(9, 55);
             this.textBox_ColorsToReplace.Name = "textBox_ColorsToReplace";
-            this.textBox_ColorsToReplace.Size = new System.Drawing.Size(312, 20);
+            this.textBox_ColorsToReplace.Size = new System.Drawing.Size(313, 20);
             this.textBox_ColorsToReplace.TabIndex = 3;
             // 
             // label_ColorsToReplace
@@ -1038,10 +1051,11 @@ namespace Vinesauce_ROM_Corruptor
             // groupBox_NESPalette
             // 
             this.groupBox_NESPalette.Controls.Add(this.pictureBox_NESPalette);
+            this.groupBox_NESPalette.Controls.Add(this.button_NESPaletteHelp);
             this.groupBox_NESPalette.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox_NESPalette.Location = new System.Drawing.Point(376, 580);
+            this.groupBox_NESPalette.Location = new System.Drawing.Point(6, 286);
             this.groupBox_NESPalette.Name = "groupBox_NESPalette";
-            this.groupBox_NESPalette.Size = new System.Drawing.Size(358, 171);
+            this.groupBox_NESPalette.Size = new System.Drawing.Size(360, 125);
             this.groupBox_NESPalette.TabIndex = 35;
             this.groupBox_NESPalette.TabStop = false;
             this.groupBox_NESPalette.Text = "NES Palette";
@@ -1053,7 +1067,7 @@ namespace Vinesauce_ROM_Corruptor
             this.pictureBox_NESPalette.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox_NESPalette.Image")));
             this.pictureBox_NESPalette.Location = new System.Drawing.Point(8, 19);
             this.pictureBox_NESPalette.Name = "pictureBox_NESPalette";
-            this.pictureBox_NESPalette.Size = new System.Drawing.Size(344, 145);
+            this.pictureBox_NESPalette.Size = new System.Drawing.Size(314, 96);
             this.pictureBox_NESPalette.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox_NESPalette.TabIndex = 0;
             this.pictureBox_NESPalette.TabStop = false;
@@ -1061,7 +1075,7 @@ namespace Vinesauce_ROM_Corruptor
             // button_NESPaletteHelp
             // 
             this.button_NESPaletteHelp.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_NESPaletteHelp.Location = new System.Drawing.Point(702, 761);
+            this.button_NESPaletteHelp.Location = new System.Drawing.Point(328, 92);
             this.button_NESPaletteHelp.Name = "button_NESPaletteHelp";
             this.button_NESPaletteHelp.Size = new System.Drawing.Size(26, 23);
             this.button_NESPaletteHelp.TabIndex = 16;
@@ -1072,7 +1086,7 @@ namespace Vinesauce_ROM_Corruptor
             // button_Save
             // 
             this.button_Save.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_Save.Location = new System.Drawing.Point(70, 757);
+            this.button_Save.Location = new System.Drawing.Point(240, 503);
             this.button_Save.Name = "button_Save";
             this.button_Save.Size = new System.Drawing.Size(69, 28);
             this.button_Save.TabIndex = 37;
@@ -1083,7 +1097,7 @@ namespace Vinesauce_ROM_Corruptor
             // button_Load
             // 
             this.button_Load.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_Load.Location = new System.Drawing.Point(146, 757);
+            this.button_Load.Location = new System.Drawing.Point(315, 503);
             this.button_Load.Name = "button_Load";
             this.button_Load.Size = new System.Drawing.Size(69, 28);
             this.button_Load.TabIndex = 38;
@@ -1096,9 +1110,9 @@ namespace Vinesauce_ROM_Corruptor
             this.pictureBox1.BackColor = System.Drawing.Color.White;
             this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.pictureBox1.Image = global::Vinesauce_ROM_Corruptor.Properties.Resources.Vinesauce_Mushroom;
-            this.pictureBox1.Location = new System.Drawing.Point(376, 11);
+            this.pictureBox1.Location = new System.Drawing.Point(6, 11);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(358, 233);
+            this.pictureBox1.Size = new System.Drawing.Size(360, 111);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.pictureBox1.TabIndex = 39;
             this.pictureBox1.TabStop = false;
@@ -1107,7 +1121,7 @@ namespace Vinesauce_ROM_Corruptor
             // 
             this.checkBox_UseTinyURL.AutoSize = true;
             this.checkBox_UseTinyURL.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBox_UseTinyURL.Location = new System.Drawing.Point(220, 765);
+            this.checkBox_UseTinyURL.Location = new System.Drawing.Point(240, 541);
             this.checkBox_UseTinyURL.Name = "checkBox_UseTinyURL";
             this.checkBox_UseTinyURL.Size = new System.Drawing.Size(101, 17);
             this.checkBox_UseTinyURL.TabIndex = 41;
@@ -1117,7 +1131,7 @@ namespace Vinesauce_ROM_Corruptor
             // button_UseTinyURLHelp
             // 
             this.button_UseTinyURLHelp.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_UseTinyURLHelp.Location = new System.Drawing.Point(328, 761);
+            this.button_UseTinyURLHelp.Location = new System.Drawing.Point(358, 537);
             this.button_UseTinyURLHelp.Name = "button_UseTinyURLHelp";
             this.button_UseTinyURLHelp.Size = new System.Drawing.Size(26, 23);
             this.button_UseTinyURLHelp.TabIndex = 42;
@@ -1129,7 +1143,7 @@ namespace Vinesauce_ROM_Corruptor
             // 
             this.checkBox_HotkeyEnable.AutoSize = true;
             this.checkBox_HotkeyEnable.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBox_HotkeyEnable.Location = new System.Drawing.Point(361, 765);
+            this.checkBox_HotkeyEnable.Location = new System.Drawing.Point(4, 541);
             this.checkBox_HotkeyEnable.Name = "checkBox_HotkeyEnable";
             this.checkBox_HotkeyEnable.Size = new System.Drawing.Size(109, 17);
             this.checkBox_HotkeyEnable.TabIndex = 43;
@@ -1141,7 +1155,7 @@ namespace Vinesauce_ROM_Corruptor
             // 
             this.button_HotkeySet.Enabled = false;
             this.button_HotkeySet.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_HotkeySet.Location = new System.Drawing.Point(471, 762);
+            this.button_HotkeySet.Location = new System.Drawing.Point(119, 537);
             this.button_HotkeySet.Name = "button_HotkeySet";
             this.button_HotkeySet.Size = new System.Drawing.Size(26, 23);
             this.button_HotkeySet.TabIndex = 44;
@@ -1152,7 +1166,7 @@ namespace Vinesauce_ROM_Corruptor
             // button_HotkeyHelp
             // 
             this.button_HotkeyHelp.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_HotkeyHelp.Location = new System.Drawing.Point(502, 762);
+            this.button_HotkeyHelp.Location = new System.Drawing.Point(151, 537);
             this.button_HotkeyHelp.Name = "button_HotkeyHelp";
             this.button_HotkeyHelp.Size = new System.Drawing.Size(26, 23);
             this.button_HotkeyHelp.TabIndex = 45;
@@ -1168,17 +1182,28 @@ namespace Vinesauce_ROM_Corruptor
             this.groupBox_Queue.Controls.Add(this.button_QueueManage);
             this.groupBox_Queue.Controls.Add(this.button_QueueAdd);
             this.groupBox_Queue.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox_Queue.Location = new System.Drawing.Point(376, 250);
+            this.groupBox_Queue.Location = new System.Drawing.Point(4, 449);
             this.groupBox_Queue.Name = "groupBox_Queue";
-            this.groupBox_Queue.Size = new System.Drawing.Size(358, 68);
+            this.groupBox_Queue.Size = new System.Drawing.Size(378, 48);
             this.groupBox_Queue.TabIndex = 46;
             this.groupBox_Queue.TabStop = false;
             this.groupBox_Queue.Text = "Queue";
             // 
+            // button_QueueAddFromFile
+            // 
+            this.button_QueueAddFromFile.Enabled = false;
+            this.button_QueueAddFromFile.Location = new System.Drawing.Point(117, 16);
+            this.button_QueueAddFromFile.Name = "button_QueueAddFromFile";
+            this.button_QueueAddFromFile.Size = new System.Drawing.Size(95, 23);
+            this.button_QueueAddFromFile.TabIndex = 46;
+            this.button_QueueAddFromFile.Text = "Add from File";
+            this.button_QueueAddFromFile.UseVisualStyleBackColor = true;
+            this.button_QueueAddFromFile.Click += new System.EventHandler(this.button_QueueAddFromFile_Click);
+            // 
             // button_QueueHelp
             // 
             this.button_QueueHelp.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_QueueHelp.Location = new System.Drawing.Point(293, 16);
+            this.button_QueueHelp.Location = new System.Drawing.Point(289, 16);
             this.button_QueueHelp.Name = "button_QueueHelp";
             this.button_QueueHelp.Size = new System.Drawing.Size(26, 23);
             this.button_QueueHelp.TabIndex = 45;
@@ -1200,9 +1225,9 @@ namespace Vinesauce_ROM_Corruptor
             // button_QueueManage
             // 
             this.button_QueueManage.Enabled = false;
-            this.button_QueueManage.Location = new System.Drawing.Point(212, 16);
+            this.button_QueueManage.Location = new System.Drawing.Point(218, 16);
             this.button_QueueManage.Name = "button_QueueManage";
-            this.button_QueueManage.Size = new System.Drawing.Size(75, 23);
+            this.button_QueueManage.Size = new System.Drawing.Size(65, 23);
             this.button_QueueManage.TabIndex = 1;
             this.button_QueueManage.Text = "Manage";
             this.button_QueueManage.UseVisualStyleBackColor = true;
@@ -1219,42 +1244,104 @@ namespace Vinesauce_ROM_Corruptor
             this.button_QueueAdd.UseVisualStyleBackColor = true;
             this.button_QueueAdd.Click += new System.EventHandler(this.button_QueueAdd_Click);
             // 
-            // button_QueueAddFromFile
+            // tabControl1
             // 
-            this.button_QueueAddFromFile.Enabled = false;
-            this.button_QueueAddFromFile.Location = new System.Drawing.Point(117, 16);
-            this.button_QueueAddFromFile.Name = "button_QueueAddFromFile";
-            this.button_QueueAddFromFile.Size = new System.Drawing.Size(89, 23);
-            this.button_QueueAddFromFile.TabIndex = 46;
-            this.button_QueueAddFromFile.Text = "Add from File";
-            this.button_QueueAddFromFile.UseVisualStyleBackColor = true;
-            this.button_QueueAddFromFile.Click += new System.EventHandler(this.button_QueueAddFromFile_Click);
+            this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.tabPage4);
+            this.tabControl1.Controls.Add(this.tabPage5);
+            this.tabControl1.Controls.Add(this.tabPage3);
+            this.tabControl1.Location = new System.Drawing.Point(4, 3);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(380, 444);
+            this.tabControl1.TabIndex = 47;
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.groupBox_FileSelection);
+            this.tabPage1.Controls.Add(this.groupBox_EmulatorSelection);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(372, 418);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "ROM and Emulator";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Controls.Add(this.groupBox_ByteCorruption);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(372, 418);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "Corruption";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.richTextBox1);
+            this.tabPage3.Controls.Add(this.pictureBox1);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(372, 418);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "About";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // tabPage4
+            // 
+            this.tabPage4.Controls.Add(this.groupBox_TextReplace);
+            this.tabPage4.Location = new System.Drawing.Point(4, 22);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Size = new System.Drawing.Size(372, 418);
+            this.tabPage4.TabIndex = 3;
+            this.tabPage4.Text = "Text";
+            this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // tabPage5
+            // 
+            this.tabPage5.Controls.Add(this.groupBox_ColorReplacement);
+            this.tabPage5.Controls.Add(this.groupBox_NESPalette);
+            this.tabPage5.Location = new System.Drawing.Point(4, 22);
+            this.tabPage5.Name = "tabPage5";
+            this.tabPage5.Size = new System.Drawing.Size(372, 418);
+            this.tabPage5.TabIndex = 4;
+            this.tabPage5.Text = "Color";
+            this.tabPage5.UseVisualStyleBackColor = true;
+            // 
+            // richTextBox1
+            // 
+            this.richTextBox1.Location = new System.Drawing.Point(6, 128);
+            this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.ReadOnly = true;
+            this.richTextBox1.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical;
+            this.richTextBox1.Size = new System.Drawing.Size(360, 284);
+            this.richTextBox1.TabIndex = 40;
+            this.richTextBox1.Text = resources.GetString("richTextBox1.Text");
             // 
             // MainForm
             // 
             this.AcceptButton = this.button_Run;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(742, 791);
+            this.ClientSize = new System.Drawing.Size(384, 562);
+            this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.groupBox_Queue);
             this.Controls.Add(this.button_HotkeyHelp);
             this.Controls.Add(this.button_HotkeySet);
             this.Controls.Add(this.checkBox_HotkeyEnable);
             this.Controls.Add(this.button_UseTinyURLHelp);
             this.Controls.Add(this.checkBox_UseTinyURL);
-            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.button_Load);
             this.Controls.Add(this.button_Save);
-            this.Controls.Add(this.button_NESPaletteHelp);
-            this.Controls.Add(this.groupBox_NESPalette);
-            this.Controls.Add(this.groupBox_ColorReplacement);
-            this.Controls.Add(this.groupBox_ByteCorruption);
             this.Controls.Add(this.button_Run);
-            this.Controls.Add(this.groupBox_TextReplace);
-            this.Controls.Add(this.groupBox_EmulatorSelection);
-            this.Controls.Add(this.groupBox_FileSelection);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
             this.Name = "MainForm";
             this.Text = "Vinesauce ROM Corruptor";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
@@ -1273,6 +1360,12 @@ namespace Vinesauce_ROM_Corruptor
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.groupBox_Queue.ResumeLayout(false);
             this.groupBox_Queue.PerformLayout();
+            this.tabControl1.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
+            this.tabPage2.ResumeLayout(false);
+            this.tabPage3.ResumeLayout(false);
+            this.tabPage4.ResumeLayout(false);
+            this.tabPage5.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1373,6 +1466,13 @@ namespace Vinesauce_ROM_Corruptor
         private System.Windows.Forms.Button button_QueueManage;
         private System.Windows.Forms.Button button_QueueAdd;
         private System.Windows.Forms.Button button_QueueAddFromFile;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.TabPage tabPage4;
+        private System.Windows.Forms.TabPage tabPage5;
+        private System.Windows.Forms.RichTextBox richTextBox1;
     }
 }
 

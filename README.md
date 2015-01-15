@@ -5,7 +5,7 @@ I have developed it thus far, and plan to continue developing it.
 You can follow along at home in the [Development](http://corruptedbytes.com/category/development/) category!
 
 This software was inspired by [Vinny's](http://www.twitch.tv/vinesauce) corruption streams on [Vinesauce](http://vinesauce.com/).
-More recently, work on the project has been inspired by [PewDiePie's](http://www.youtube.com/user/PewDiePie) use of the program to make this terrifying and hilarious [video](http://www.youtube.com/watch?v=n648c_beeRI).
+Others who have used the program to create entertaining results include [PewDiePie](http://www.youtube.com/watch?v=n648c_beeRI) and [PeanutButterGamer](http://www.youtube.com/watch?v=0VANlhef0EY).
 
 [Download Latest Release](http://github.com/Rikerz/VRC/raw/master/bin/Vinesauce%20ROM%20Corruptor%20v1.1.0.zip)
 
